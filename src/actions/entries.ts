@@ -24,7 +24,7 @@ export const createEntry = async (entryFields: EntryFields) => {
   return entry;
 };
 
-export const setSleepTime = async (entryId: string, sleepTime: Date) => {
+export const updateSleepTime = async (entryId: string, sleepTime: Date) => {
   const currentUserId = (await getCurrentUser()).id;
 
   const entry = await prisma.entry.update({
@@ -39,7 +39,7 @@ export const setSleepTime = async (entryId: string, sleepTime: Date) => {
   return entry;
 };
 
-export const setWakeTime = async (entryId: string, wakeTime: Date) => {
+export const updateWakeTime = async (entryId: string, wakeTime: Date) => {
   const currentUserId = (await getCurrentUser()).id;
 
   const entry = await prisma.entry.update({
@@ -54,7 +54,7 @@ export const setWakeTime = async (entryId: string, wakeTime: Date) => {
   return entry;
 };
 
-export const setActivity = async (entryId: string, activity: string) => {
+export const updateActivity = async (entryId: string, activity: string) => {
   const currentUserId = (await getCurrentUser()).id;
 
   const entry = await prisma.entry.update({
@@ -69,7 +69,7 @@ export const setActivity = async (entryId: string, activity: string) => {
   return entry;
 };
 
-export const setEnergyLevel = async (entryId: string, energyLevel: number) => {
+export const updateEnergyLevel = async (entryId: string, energyLevel: number) => {
   const currentUserId = (await getCurrentUser()).id;
 
   // Energy level can only be 1-4
