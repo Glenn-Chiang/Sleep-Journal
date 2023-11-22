@@ -7,7 +7,7 @@ import React from "react";
 type SubmitButtonProps = {
   children: React.ReactNode;
   onClick?: () => void;
-  isPending: boolean;
+  isPending?: boolean;
 };
 
 export const SubmitButton = ({

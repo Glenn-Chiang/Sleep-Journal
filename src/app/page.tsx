@@ -14,7 +14,7 @@ export default async function Home() {
     <>
       <Link
         href={"/add-entry"}
-        className="shadow p-2 rounded-md bg-blue-100 text-sky-500 w-full text-center font-bold hover:bg-blue-200 hover:text-sky-600 transition"
+        className="shadow p-2 rounded-md bg-sky-100 text-sky-500 w-full text-center font-medium hover:bg-sky-200 hover:text-sky-600 transition"
       >
         Add entry
       </Link>
