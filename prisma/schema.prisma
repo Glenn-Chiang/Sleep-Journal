@@ -10,3 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  userId Int @id @default(autoincrement())
+  username String
+  email String
+}
+
+model Entry {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sleepTime DateTime? 
+  wakeTime DateTime?
+  activityDescription String?
+  energyLevel Int?
+}
+
