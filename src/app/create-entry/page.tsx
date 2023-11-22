@@ -1,9 +1,11 @@
 "use client";
 
 import { SubmitButton, CancelButton } from "@/components/buttons";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export const CreateEntryPage = () => {
+export default function CreateEntryPage() {
+  const router = useRouter()
   const [isPending, setIsPending] = useState(false);
 
   return (
@@ -25,7 +27,7 @@ export const CreateEntryPage = () => {
 
         <div className="flex gap-4">
           <SubmitButton isPending={isPending}>Confirm</SubmitButton>
-          <CancelButton onClick={close} />
+          <CancelButton onClick={() => router.back()} />
         </div>
       </form>
     </>

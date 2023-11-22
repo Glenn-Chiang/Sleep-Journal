@@ -1,9 +1,15 @@
-import Image from 'next/image'
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-
-    </main>
-  )
+    <>
+      <Link
+        href={"/create-entry"}
+        className="shadow p-2 rounded-md bg-sky-100 text-sky-500 w-full text-center font-medium hover:bg-sky-200 hover:text-sky-600 transition"
+      >
+        Add Entry
+      </Link>
+    </>
+  );
 }
