@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type EnergyScaleProps = {
   handleClick: (value: number) => void;
-  selectedValue: number | null;
+  selectedValue?: number;
 };
 
 export const EnergyScale = ({

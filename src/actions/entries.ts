@@ -2,7 +2,6 @@
 
 import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/db";
-import { EntryFields } from "@/lib/types";
 
 export const getUserEntries = async (userId: number) => {
   const entries = await prisma.entry.findMany({
@@ -12,6 +11,13 @@ export const getUserEntries = async (userId: number) => {
   });
 
   return entries;
+};
+
+type EntryFields = {
+  sleepTime: Date;
+  wakeTime?: Date;
+  activity?: string;
+  energyLevel?: number;
 };
 
 export const createEntry = async (entryFields: EntryFields) => {
