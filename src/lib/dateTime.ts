@@ -1,5 +1,5 @@
 export const formatDate = (timestamp: Date) => {
-  return timestamp.toLocaleDateString(undefined, {day: '2-digit', month: 'short', year: 'numeric'})
+  return timestamp.toLocaleDateString(undefined, {weekday: 'short', day: '2-digit', month: 'short', year: 'numeric'})
 }
 
 export const formatTime = (timestamp: Date) => {

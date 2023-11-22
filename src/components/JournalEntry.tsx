@@ -1,12 +1,17 @@
 "use client";
 
-import { updateSleepTime, updateWakeTime } from "@/actions/entries";
+import {
+  updateEnergyLevel,
+  updateSleepTime,
+  updateWakeTime,
+} from "@/actions/entries";
 import { formatDate } from "@/lib/dateTime";
-import { faBed, faSun } from "@fortawesome/free-solid-svg-icons";
+import { faBattery, faBed, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
 import { formatTime } from "../lib/dateTime";
-import { ActivityEditor } from './ActivityEditor';
+import { ActivityEditor } from "./ActivityEditor";
+import { EnergyScale } from "./EnergyScale";
 
 type JournalEntryProps = {
   entry: Entry;
@@ -33,7 +38,10 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
     await updateWakeTime(entry.id, newWakeTime);
   };
 
-  
+  const handleEnergyClick = async (clickedLevel: number) => {
+    await updateEnergyLevel(entry.id, clickedLevel);
+  };
+
   return (
     <article className="shadow bg-white p-4 rounded-xl w-full flex flex-col gap-4">
       <h2>
@@ -42,7 +50,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
       <section className="flex gap-2">
         <label
           htmlFor={`sleepTime-${entry.id}`}
-          className="text-sky-500 flex gap-1 items-center"
+          className="text-slate-500 flex gap-1 items-center"
         >
           <FontAwesomeIcon icon={faBed} />
           Slept at
@@ -58,7 +66,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
       <section className="flex gap-2">
         <label
           htmlFor={`wakeTime-${entry.id}`}
-          className="text-sky-500 flex gap-1 items-center"
+          className="text-slate-500 flex gap-1 items-center"
         >
           <FontAwesomeIcon icon={faSun} />
           Woke at
@@ -72,7 +80,18 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
         />
       </section>
 
-      <ActivityEditor entryId={entry.id} initialValue={activity}/>
+      <ActivityEditor entryId={entry.id} initialValue={activity} />
+
+      <div className="flex flex-col gap-2">
+        <label className="text-slate-500 flex gap-2 items-center">
+          <FontAwesomeIcon icon={faBattery} />
+          Energy level
+        </label>
+        <EnergyScale
+          handleClick={handleEnergyClick}
+          selectedValue={energyLevel}
+        />
+      </div>
     </article>
   );
 };

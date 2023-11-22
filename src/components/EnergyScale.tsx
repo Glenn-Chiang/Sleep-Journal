@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type EnergyScaleProps = {
   handleClick: (value: number) => void;
-  selectedValue?: number;
+  selectedValue?: number | null;
 };
 
 export const EnergyScale = ({
@@ -60,7 +60,7 @@ const EnergyButton = ({
     <button
       type="button"
       onClick={onClick}
-      className={`flex flex-col gap-2 items-center p-2  w-1/4 ${
+      className={`flex flex-col gap-2 items-center p-2 text-sky-500  w-1/4 ${
         selected ? "bg-sky-200 text-sky-600" : "hover:bg-sky-100"
       }`}
     >

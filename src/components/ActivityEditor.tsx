@@ -47,7 +47,7 @@ export const ActivityEditor = ({
   return (
     <section className="flex flex-col gap-2">
       <div className="flex gap-4 items-center">
-        <span className="text-sky-500">Activity before sleeping</span>
+        <span className="text-slate-500">Activity before sleeping</span>
         <button
           onClick={() => setInEditMode((prev) => !prev)}
           className="w-max px-4 bg-sky-100 text-sky-500"

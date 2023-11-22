@@ -2,6 +2,7 @@
 
 import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 export const getUserEntries = async (userId: number) => {
   const entries = await prisma.entry.findMany({
@@ -10,6 +11,7 @@ export const getUserEntries = async (userId: number) => {
     },
   });
 
+  revalidatePath("/");
   return entries;
 };
 
@@ -42,6 +44,7 @@ export const updateSleepTime = async (entryId: string, sleepTime: Date) => {
     },
   });
 
+  revalidatePath("/");
   return entry;
 };
 
@@ -57,6 +60,7 @@ export const updateWakeTime = async (entryId: string, wakeTime: Date) => {
     },
   });
 
+  revalidatePath("/");
   return entry;
 };
 
@@ -72,6 +76,7 @@ export const updateActivity = async (entryId: string, activity: string | null) =
     },
   });
 
+  revalidatePath("/");
   return entry;
 };
 
@@ -92,5 +97,6 @@ export const updateEnergyLevel = async (entryId: string, energyLevel: number) =>
     },
   });
 
+  revalidatePath('/')
   return entry;
 };
