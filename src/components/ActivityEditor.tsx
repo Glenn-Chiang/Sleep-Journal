@@ -2,21 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CancelButton, SubmitButton } from "./buttons";
+import { updateActivity } from "@/actions/entries";
 
 type ActivityEditorProps = {
+  entryId: string;
   initialValue: string | null;
 };
 
-export const ActivityEditor = ({ initialValue }: ActivityEditorProps) => {
-  const [input, setInput] = useState(initialValue);
-
-  // Keep track of input string
-  const handleInputChange: React.ChangeEventHandler<
-    HTMLTextAreaElement
-  > = async (event) => {
-    setInput(event.target.value);
-  };
-
+export const ActivityEditor = ({
+  entryId,
+  initialValue,
+}: ActivityEditorProps) => {
   // Toggling of inline editing for activity field
   const [inEditMode, setInEditMode] = useState(false);
   const textRef = useRef<HTMLTextAreaElement>(null);
@@ -25,6 +21,23 @@ export const ActivityEditor = ({ initialValue }: ActivityEditorProps) => {
       textRef.current?.focus();
     }
   }, [inEditMode]);
+
+  // Keep track of input string
+  const [input, setInput] = useState(initialValue);
+  const handleInputChange: React.ChangeEventHandler<
+    HTMLTextAreaElement
+  > = async (event) => {
+    setInput(event.target.value);
+  };
+
+  const [isPending, setIsPending] = useState(false);
+
+  // Submission
+  const handleSubmit = async () => {
+    setIsPending(true);
+    await updateActivity(entryId, input);
+    setInEditMode(false);
+  };
 
   const handleCancel = () => {
     setInEditMode(false);
@@ -46,13 +59,15 @@ export const ActivityEditor = ({ initialValue }: ActivityEditorProps) => {
         onChange={handleInputChange}
         ref={textRef}
         autoFocus={inEditMode}
-        disabled={!inEditMode}
+        disabled={!inEditMode || isPending}
         className="p-2 bg-slate-100 rounded-md"
         value={input || ""}
       />
       {inEditMode && (
         <div className="flex gap-2">
-          <SubmitButton>Save</SubmitButton>
+          <SubmitButton isPending={isPending} onClick={handleSubmit}>
+            Save
+          </SubmitButton>
           <CancelButton onClick={handleCancel} />
         </div>
       )}

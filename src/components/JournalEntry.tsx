@@ -72,7 +72,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
         />
       </section>
 
-      <ActivityEditor initialValue={activity}/>
+      <ActivityEditor entryId={entry.id} initialValue={activity}/>
     </article>
   );
 };

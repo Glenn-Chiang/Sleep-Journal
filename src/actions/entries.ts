@@ -60,7 +60,7 @@ export const updateWakeTime = async (entryId: string, wakeTime: Date) => {
   return entry;
 };
 
-export const updateActivity = async (entryId: string, activity: string) => {
+export const updateActivity = async (entryId: string, activity: string | null) => {
   const currentUserId = (await getCurrentUser()).id;
 
   const entry = await prisma.entry.update({
