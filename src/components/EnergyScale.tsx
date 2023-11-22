@@ -1,21 +1,71 @@
-"use client"
+"use client";
 
+import {
+  IconDefinition,
+  faFaceDizzy,
+  faFaceGrimace,
+  faFaceSmile,
+  faFaceTired,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBattery } from "@fortawesome/free-solid-svg-icons";
 
 type EnergyScaleProps = {
-  setLevel: (energyLevel: number) => void
-}
+  handleClick: (value: number) => void;
+  selectedValue: number | null;
+};
 
-export const EnergyScale = ({setLevel}: EnergyScaleProps) => {
+export const EnergyScale = ({
+  selectedValue,
+  handleClick,
+}: EnergyScaleProps) => {
+  const options = [
+    { label: "Always tired", value: 1, icon: faFaceDizzy },
+    { label: "Mostly tired", value: 2, icon: faFaceTired },
+    { label: "Sometimes tired", value: 3, icon: faFaceGrimace },
+    { label: "Not tired", value: 4, icon: faFaceSmile },
+  ];
+
   return (
-    <section>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="energyLevel" className="flex gap-2 items-center">
-          <FontAwesomeIcon icon={faBattery} className="text-emerald-500" />
-          How would you rate your energy level?
-        </label>
-      </div>
-    </section>
+    <ul className="flex gap-4  w-full">
+      {options.map((option) => (
+        <EnergyButton
+          key={option.value}
+          label={option.label}
+          value={option.value}
+          icon={option.icon}
+          onClick={() => handleClick(option.value)}
+          selected={option.value === selectedValue}
+        />
+      ))}
+    </ul>
   );
-}
+};
+
+type EnergyButtonProps = {
+  label: string;
+  value: number;
+  icon: IconDefinition;
+  onClick: () => void;
+  selected: boolean;
+};
+
+const EnergyButton = ({
+  label,
+  value,
+  icon,
+  onClick,
+  selected,
+}: EnergyButtonProps) => {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex flex-col gap-2 items-center p-2  w-1/4 ${
+        selected ? "bg-sky-200 text-sky-600" : "hover:bg-sky-100"
+      }`}
+    >
+      <FontAwesomeIcon icon={icon} className="text-sky-500" />
+      <span className="text-sm">{label}</span>
+    </button>
+  );
+};
