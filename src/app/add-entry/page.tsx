@@ -3,22 +3,21 @@
 import { CancelButton, SubmitButton } from "@/components/buttons";
 import { faBattery, faBed, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { EnergyScale } from "./EnergyScale";
-import { Modal } from "./Modal";
-import React from 'react';
-import { createEntry } from "@/actions/entries";
+import { EnergyScale } from "@/components/EnergyScale";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { ErrorMessage } from "@/components/ErrorMessage";
 
-type AddEntryModalProps = {
-  close: () => void;
-};
+type EntryFormFields = {
+  sleepTime: string;
+  wakeTime?: string;
+  activity?: string;
+}
 
-export const AddEntryModal = ({ close }: AddEntryModalProps) => {
+export default function AddEntryPage() {
+  const {register, handleSubmit, formState: {errors}} = useForm<EntryFormFields>()
   const [isPending, setIsPending] = useState(false);
-
-  const [sleepTime, setSleepTime] = useState<string | null>(null);
-  const [wakeTime, setWakeTime] = useState<string | null>(null);
-  const [activity, setActivity] = useState<string | null>(null);
   const [energyLevel, setEnergyLevel] = useState<number | null>(null);
 
   const handleEnergyClick = (clickedLevel: number) => {
@@ -30,74 +29,78 @@ export const AddEntryModal = ({ close }: AddEntryModalProps) => {
     }
   };
 
-  const handleSubmit: React.FormEventHandler = async (event) => {
-    setIsPending(true)
-    event.preventDefault()
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<EntryFormFields> = async (formFields) => {
+    setIsPending(true);
     // await createEntry({
     //   sleepTime: new Date(sleepTime)
     // })
-  }
+  };
 
   return (
-    <Modal>
-      <h1>Add an entry</h1>
-      <form className="flex flex-col gap-8">
-        <div className="flex flex-col gap-2">
+    <>
+      <h1 className="">Record your Sleep</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
+        <section className="flex flex-col gap-2">
           <label htmlFor="sleepTime" className="flex gap-2 items-center">
             <FontAwesomeIcon icon={faBed} className="text-sky-500" />
             When did you go to bed?
           </label>
+          {errors.sleepTime?.message && <ErrorMessage message={errors.sleepTime.message}/>}
           <input
-            onChange={(event) => setSleepTime(event.target.value)}
             id="sleepTime"
             type="datetime-local"
+            {...register('sleepTime', {required: 'Please fill in this field'})}
             className="w-min"
             disabled={isPending}
           />
-        </div>
+        </section>
 
-        <div className="flex flex-col gap-2">
+        <section className="flex flex-col gap-2">
           <label htmlFor="activity" className="flex gap-2 items-center">
             What were you doing before bed?
           </label>
+          {errors.activity?.message && <ErrorMessage message={errors.activity.message}/>}
           <textarea
-            onChange={(event) => setActivity(event.target.value)}
             id="activity"
-            className="rounded-md shadow bg-slate-100 h-[10vh] p-2"
+            {...register('activity', {required: 'Please fill in this field'})}
             disabled={isPending}
           />
-        </div>
+        </section>
 
-        <div className="flex flex-col gap-2">
+        <section className="flex flex-col gap-2">
           <label htmlFor="wakeTime" className="flex gap-2 items-center">
             <FontAwesomeIcon icon={faSun} className="text-yellow-500" />
             When did you wake up?
           </label>
           <input
-            onChange={(event) => setWakeTime(event.target.value)}
             id="sleepTime"
             type="datetime-local"
             className="w-min"
             disabled={isPending}
           />
-        </div>
+        </section>
 
-        <div className="flex flex-col gap-2">
-          <p className="flex gap-2 items-center">
+        <section className="flex flex-col gap-2">
+          <div className="flex gap-2 items-center">
             <FontAwesomeIcon icon={faBattery} className="text-teal-500" />
-            How would you rate your energy level?
-          </p>
+            <p>
+              How would you rate your energy level throughout the day?{" "}
+              <span className="text-slate-500">(after this sleep)</span>
+            </p>
+          </div>
           <EnergyScale
             handleClick={handleEnergyClick}
             selectedValue={energyLevel}
           />
-        </div>
+        </section>
 
         <div className="flex gap-4">
           <SubmitButton isPending={isPending}>Confirm</SubmitButton>
-          <CancelButton onClick={close} />
+          <CancelButton onClick={() => router.back()} />
         </div>
       </form>
-    </Modal>
+    </>
   );
-};
+}
