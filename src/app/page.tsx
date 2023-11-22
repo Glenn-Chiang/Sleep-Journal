@@ -1,4 +1,5 @@
 import { getUserEntries } from "@/actions/entries";
+import { AddEntrySection } from "@/components/AddEntrySection";
 import { JournalEntry } from "@/components/JournalEntry";
 import { getCurrentUser } from "@/lib/auth";
 import { Entry } from "@prisma/client";
@@ -11,12 +12,7 @@ export default async function Home() {
 
   return (
     <>
-      <Link
-        href={"/create-entry"}
-        className="shadow p-2 rounded-md bg-sky-100 text-sky-500 w-full text-center font-bold hover:bg-sky-200 hover:text-sky-600 transition"
-      >
-        Add Entry
-      </Link>
+      <AddEntrySection/>
       <EntriesList entries={entries} />
     </>
   );
