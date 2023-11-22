@@ -1,12 +1,12 @@
 "use client";
 
+import { updateSleepTime, updateWakeTime } from "@/actions/entries";
 import { formatDate } from "@/lib/dateTime";
 import { faBed, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
 import { formatTime } from "../lib/dateTime";
-import { useEffect, useState, useRef } from "react";
-import { CancelButton, SubmitButton } from "./buttons";
+import { ActivityEditor } from './ActivityEditor';
 
 type JournalEntryProps = {
   entry: Entry;
@@ -19,16 +19,21 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
 
   const handleSleepTimeChange: React.ChangeEventHandler<
     HTMLInputElement
-  > = async (event) => {};
+  > = async (event) => {
+    const newSleepTime = event.target.valueAsDate;
+    if (!newSleepTime) return;
+    await updateSleepTime(entry.id, newSleepTime);
+  };
 
-  const [inEditMode, setInEditMode] = useState(false);
-  const textRef = useRef<HTMLTextAreaElement>(null)
-  useEffect(() => {
-    if (inEditMode) {
-      textRef.current?.focus()
-    }
-  }, [inEditMode])
+  const handleWakeTimeChange: React.ChangeEventHandler<
+    HTMLInputElement
+  > = async (event) => {
+    const newWakeTime = event.target.valueAsDate;
+    if (!newWakeTime) return;
+    await updateWakeTime(entry.id, newWakeTime);
+  };
 
+  
   return (
     <article className="shadow bg-white p-4 rounded-xl w-full flex flex-col gap-4">
       <h2>
@@ -46,6 +51,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
           id={`sleepTime-${entry.id}`}
           type="time"
           defaultValue={formatTime(sleepTime)}
+          onChange={handleSleepTimeChange}
           className="bg-slate-100"
         />
       </section>
@@ -61,34 +67,12 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
           id={`wakeTime-${entry.id}`}
           type="time"
           defaultValue={wakeTime ? formatTime(wakeTime) : undefined}
+          onChange={handleWakeTimeChange}
           className="bg-slate-100"
         />
       </section>
 
-      <section className="flex flex-col gap-2">
-        <div className="flex gap-4 items-center">
-          <span className="text-sky-500">Activity before sleeping</span>
-          <button
-            onClick={() => setInEditMode((prev) => !prev)}
-            className="w-max px-4 bg-sky-100 text-sky-500"
-          >
-            Edit
-          </button>
-        </div>
-        <textarea
-        ref={textRef}
-          autoFocus={inEditMode}
-          disabled={!inEditMode}
-          className="p-2 bg-slate-100 rounded-md"
-          defaultValue={activity || ""}
-        />
-        {inEditMode && (
-          <div className="flex gap-2">
-            <SubmitButton>Save</SubmitButton>
-            <CancelButton onClick={() => setInEditMode(false)} />
-          </div>
-        )}
-      </section>
+      <ActivityEditor initialValue={activity}/>
     </article>
   );
 };
