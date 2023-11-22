@@ -5,7 +5,7 @@ import {
   updateSleepTime,
   updateWakeTime,
 } from "@/actions/entries";
-import { formatDate } from "@/lib/dateTime";
+import { formatDate, formatDatetime, setTimeOfDate } from "@/lib/dateTime";
 import { faBattery, faBed, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
@@ -25,16 +25,14 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
   const handleSleepTimeChange: React.ChangeEventHandler<
     HTMLInputElement
   > = async (event) => {
-    const newSleepTime = event.target.valueAsDate;
-    if (!newSleepTime) return;
+    const newSleepTime = new Date(event.target.value);
     await updateSleepTime(entry.id, newSleepTime);
   };
 
   const handleWakeTimeChange: React.ChangeEventHandler<
     HTMLInputElement
   > = async (event) => {
-    const newWakeTime = event.target.valueAsDate;
-    if (!newWakeTime) return;
+    const newWakeTime = new Date(event.target.value);
     await updateWakeTime(entry.id, newWakeTime);
   };
 
@@ -57,8 +55,8 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
         </label>{" "}
         <input
           id={`sleepTime-${entry.id}`}
-          type="time"
-          defaultValue={formatTime(sleepTime)}
+          type="datetime-local"
+          defaultValue={formatDatetime(sleepTime)}
           onChange={handleSleepTimeChange}
           className="bg-slate-100"
         />
@@ -73,8 +71,8 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
         </label>{" "}
         <input
           id={`wakeTime-${entry.id}`}
-          type="time"
-          defaultValue={wakeTime ? formatTime(wakeTime) : undefined}
+          type="datetime-local"
+          defaultValue={wakeTime ? formatDatetime(wakeTime) : undefined}
           onChange={handleWakeTimeChange}
           className="bg-slate-100"
         />
