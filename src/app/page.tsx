@@ -28,8 +28,14 @@ type EntriesListProps = {
 };
 
 const EntriesList = ({ entries }: EntriesListProps) => {
+  if (!entries.length) {
+    return (
+      <p className="text-slate-500">You haven&apos;t recorded any sleep entries</p>
+    )
+  }
+
   return (
-    <ul>
+    <ul className="w-full">
       {entries.map((entry) => (
         <JournalEntry key={entry.id} entry={entry} />
       ))}

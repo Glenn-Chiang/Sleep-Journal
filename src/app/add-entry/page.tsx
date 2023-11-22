@@ -117,7 +117,7 @@ export default function AddEntryPage() {
               <span>
                 How would you rate your energy level throughout the day?
               </span>{" "}
-              <span className="text-slate-500">(after waking up)</span>
+              <span className="text-slate-500">(after this sleep)</span>
             </p>
           </div>
           <EnergyScale

@@ -23,8 +23,8 @@ model Entry {
   user User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  pending Boolean?
-  sleepTime DateTime? 
+  // pending Boolean?
+  sleepTime DateTime
   wakeTime DateTime?
   activity String?
   energyLevel Int?

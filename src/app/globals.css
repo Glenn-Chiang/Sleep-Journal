@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-slate-50
+    @apply bg-slate-100
   }
   h1 {
     @apply text-2xl
@@ -16,6 +16,6 @@
     @apply p-2 rounded-md transition 
   }
   input, textarea {
-    @apply p-2 rounded-md bg-slate-100
+    @apply p-2 rounded-md bg-slate-200
   }
 }
