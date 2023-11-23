@@ -67,7 +67,7 @@ export const TimeInput = ({
     <div className="flex flex-col gap-2 ">
       <div className="flex gap-2">
         <label
-          htmlFor={`sleepTime-${entry.id}`}
+          htmlFor={`${label} ${entry.id}`}
           className="text-slate-500 flex gap-1 items-center flex-col sm:flex-row"
         >
           <FontAwesomeIcon icon={icon} />

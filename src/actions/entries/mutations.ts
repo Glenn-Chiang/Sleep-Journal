@@ -19,6 +19,7 @@ export const createEntry = async (entryFields: EntryFields) => {
     data: { ...entryFields, userId: currentUserId },
   });
 
+  revalidatePath('/')
   return entry;
 };
 

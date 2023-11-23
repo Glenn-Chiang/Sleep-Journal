@@ -88,17 +88,23 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
         </>
       )}
 
-      <button
-        onClick={() => setPreviewMode((prev) => !prev)}
-        className="flex gap-2 items-center justify-center text-sky-500 hover:bg-sky-100 w-max"
-      >
-        {previewMode ? (
-          <FontAwesomeIcon icon={faChevronDown} />
-        ) : (
-          <FontAwesomeIcon icon={faChevronUp} />
-        )}
-        {previewMode ? "Show more" : "Show less"}
-      </button>
+      <div className="flex justify-between col-span-2">
+        <button
+          onClick={() => setPreviewMode((prev) => !prev)}
+          className="flex gap-2 items-center justify-center text-sky-500 hover:bg-sky-100 w-max"
+        >
+          {previewMode ? (
+            <FontAwesomeIcon icon={faChevronDown} />
+          ) : (
+            <FontAwesomeIcon icon={faChevronUp} />
+          )}
+          {previewMode ? "Show more" : "Show less"}
+        </button>
+        <button className="bg-slate-100 text-red-500 hover:bg-red-100"> 
+          Delete 
+        </button>
+      </div>
     </article>
   );
 };
+//TODO: Implement delete functionality

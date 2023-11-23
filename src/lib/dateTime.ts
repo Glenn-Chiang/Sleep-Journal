@@ -37,7 +37,9 @@ export const convertDurationToHoursAndMinutes = (duration: number) => {
 }
 
 export const calculateAverageTime = (timestamps: Date[]) => {
+  console.log(timestamps)
   const sum = timestamps.reduce((sum, value) => sum + value.getTime(), 0)
   const averageTime = new Date(sum / timestamps.length)
+  console.log('Average:', averageTime)
   return averageTime
 }
