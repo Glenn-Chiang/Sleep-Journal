@@ -41,6 +41,7 @@ export const TimeInput = ({
         type="datetime-local"
         defaultValue={defaultValue ? formatDatetime(defaultValue) : undefined}
         onChange={handleTimeChange}
+        onKeyDown={(event) => event.preventDefault()}
         className="bg-slate-100"
       />
     </div>
