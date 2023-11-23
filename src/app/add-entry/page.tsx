@@ -55,9 +55,9 @@ export default function AddEntryPage() {
       router.push('/')
     } catch (error) {
       setError((error as Error).message)
+      setIsPending(false)
     }
 
-    setIsPending(false)
   };
 
   return (
