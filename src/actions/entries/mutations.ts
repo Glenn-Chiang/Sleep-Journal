@@ -4,7 +4,6 @@ import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-
 type EntryFields = {
   sleepTime: Date;
   wakeTime?: Date;
@@ -19,7 +18,20 @@ export const createEntry = async (entryFields: EntryFields) => {
     data: { ...entryFields, userId: currentUserId },
   });
 
-  revalidatePath('/')
+  revalidatePath("/");
+  return entry;
+};
+
+export const deleteEntry = async (entryId: string) => {
+  const currentUserId = (await getCurrentUser()).id;
+
+  const entry = await prisma.entry.delete({
+    where: {
+      id: entryId,
+    },
+  });
+
+  revalidatePath("/");
   return entry;
 };
 

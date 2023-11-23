@@ -4,7 +4,7 @@ import { updateEnergyLevel } from "@/actions/entries/mutations";
 import {
   calculateDuration,
   convertDurationToHoursAndMinutes,
-  formatDate
+  formatDate,
 } from "@/lib/dateTime";
 import {
   faBattery,
@@ -20,6 +20,7 @@ import { useState } from "react";
 import { ActivityEditor } from "./ActivityEditor";
 import { EnergyScale } from "./EnergyScale";
 import { TimeInput } from "./TimeInput";
+import { DeleteEntryModal } from "./DeleteEntryModal";
 
 type JournalEntryProps = {
   entry: Entry;
@@ -39,6 +40,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
   };
 
   const [previewMode, setPreviewMode] = useState(true);
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
   return (
     <article className="shadow bg-white p-4 rounded-xl w-full gap-8 grid grid-cols-1 sm:grid-cols-2">
@@ -100,11 +102,20 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
           )}
           {previewMode ? "Show more" : "Show less"}
         </button>
-        <button className="bg-slate-100 text-red-500 hover:bg-red-100"> 
-          Delete 
+
+        <button
+          onClick={() => setDeleteModalIsOpen(true)}
+          className="bg-slate-100 text-red-500 hover:bg-red-100"
+        >
+          Delete
         </button>
       </div>
+      {deleteModalIsOpen && (
+        <DeleteEntryModal
+          entryId={entry.id}
+          close={() => setDeleteModalIsOpen(false)}
+        />
+      )}
     </article>
   );
 };
-//TODO: Implement delete functionality
