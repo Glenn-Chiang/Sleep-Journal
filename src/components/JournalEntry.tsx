@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
 import { ActivityEditor } from "./ActivityEditor";
 import { EnergyScale } from "./EnergyScale";
+import { TimeInput } from "./TimeInput";
 
 type JournalEntryProps = {
   entry: Entry;
@@ -34,20 +35,6 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
   const sleepDuration = calculateDuration(sleepTime, wakeTime);
   const { hours: hoursOfSleep, minutes: minutesOfSleep } =
     convertDurationToHoursAndMinutes(sleepDuration);
-
-  const handleSleepTimeChange: React.ChangeEventHandler<
-    HTMLInputElement
-  > = async (event) => {
-    const newSleepTime = new Date(event.target.value);
-    await updateSleepTime(entry.id, newSleepTime);
-  };
-
-  const handleWakeTimeChange: React.ChangeEventHandler<
-    HTMLInputElement
-  > = async (event) => {
-    const newWakeTime = new Date(event.target.value);
-    await updateWakeTime(entry.id, newWakeTime);
-  };
 
   const handleEnergyClick = async (clickedLevel: number) => {
     await updateEnergyLevel(entry.id, clickedLevel);
@@ -70,38 +57,18 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
       </div>
 
       <div className="flex flex-col gap-4 ">
-        <div className="flex gap-2">
-          <label
-            htmlFor={`sleepTime-${entry.id}`}
-            className="text-slate-500 flex gap-1 items-center flex-col sm:flex-row"
-          >
-            <FontAwesomeIcon icon={faMoon} />
-            Slept at
-          </label>{" "}
-          <input
-            id={`sleepTime-${entry.id}`}
-            type="datetime-local"
-            defaultValue={formatDatetime(sleepTime)}
-            onChange={handleSleepTimeChange}
-            className="bg-slate-100"
-          />
-        </div>
-        <div className="flex gap-2">
-          <label
-            htmlFor={`wakeTime-${entry.id}`}
-            className="text-slate-500 flex gap-1 items-center flex-col sm:flex-row"
-          >
-            <FontAwesomeIcon icon={faSun} />
-            Woke at
-          </label>{" "}
-          <input
-            id={`wakeTime-${entry.id}`}
-            type="datetime-local"
-            defaultValue={wakeTime ? formatDatetime(wakeTime) : undefined}
-            onChange={handleWakeTimeChange}
-            className="bg-slate-100"
-          />
-        </div>
+        <TimeInput
+          label="Slept at"
+          icon={faMoon}
+          entryId={entry.id}
+          defaultValue={sleepTime}
+        />
+        <TimeInput
+          label="Woke at"
+          icon={faSun}
+          entryId={entry.id}
+          defaultValue={wakeTime}
+        />
       </div>
 
       <ActivityEditor entryId={entry.id} initialValue={activity} />

@@ -9,6 +9,9 @@ export const getUserEntries = async (userId: number) => {
     where: {
       userId,
     },
+    orderBy: {
+      sleepTime: "desc",
+    },
   });
 
   revalidatePath("/");
@@ -64,7 +67,10 @@ export const updateWakeTime = async (entryId: string, wakeTime: Date) => {
   return entry;
 };
 
-export const updateActivity = async (entryId: string, activity: string | null) => {
+export const updateActivity = async (
+  entryId: string,
+  activity: string | null
+) => {
   const currentUserId = (await getCurrentUser()).id;
 
   const entry = await prisma.entry.update({
@@ -80,7 +86,10 @@ export const updateActivity = async (entryId: string, activity: string | null) =
   return entry;
 };
 
-export const updateEnergyLevel = async (entryId: string, energyLevel: number) => {
+export const updateEnergyLevel = async (
+  entryId: string,
+  energyLevel: number
+) => {
   const currentUserId = (await getCurrentUser()).id;
 
   // Energy level can only be 1-4
@@ -97,6 +106,6 @@ export const updateEnergyLevel = async (entryId: string, energyLevel: number) =>
     },
   });
 
-  revalidatePath('/')
+  revalidatePath("/");
   return entry;
 };

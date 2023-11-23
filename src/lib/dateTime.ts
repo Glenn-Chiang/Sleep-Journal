@@ -27,8 +27,6 @@ export const formatDatetime = (date: Date) => {
 
 export const calculateDuration = (start: Date, end: Date | null) => {
   if (!end) return 0
-  console.log(start)
-  console.log(end)
   const durationInHours = (end.getTime() - start.getTime()) / 1000 / 3600
   return durationInHours
 }
