@@ -1,4 +1,4 @@
-import { updateSleepTime, updateWakeTime } from "@/actions/entries";
+import { updateSleepTime, updateWakeTime } from "@/actions/entries/mutations";
 import { calculateDuration, formatDatetime } from "@/lib/dateTime";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,13 +27,12 @@ export const TimeInput = ({
     const newTime = new Date(event.target.value);
 
     if (label === "Slept at") {
-      await handleSleepTimeChange(newTime)
+      await handleSleepTimeChange(newTime);
     } else if (label === "Woke at") {
-      await handleWakeTimeChange(newTime)
+      await handleWakeTimeChange(newTime);
     }
-    
   };
-  
+
   const handleSleepTimeChange = async (sleepTime: Date) => {
     // Waketime cannot be earlier than sleepTime
     if (entry.wakeTime && sleepTime > entry.wakeTime) {
@@ -42,12 +41,12 @@ export const TimeInput = ({
     }
     // Waketime cannot be 24h later than sleepTime
     if (calculateDuration(sleepTime, entry.wakeTime) > 24) {
-      setError("There's no way you slept more than 24h, is there?");
+      setError("There's no way you slept more than 24h");
       return;
     }
     await updateSleepTime(entry.id, sleepTime);
     setError(null);
-  }
+  };
 
   const handleWakeTimeChange = async (wakeTime: Date) => {
     // Waketime cannot be earlier than sleepTime
@@ -57,7 +56,7 @@ export const TimeInput = ({
     }
     // Waketime cannot be 24h later than sleepTime
     if (calculateDuration(entry.sleepTime, wakeTime) > 24) {
-      setError("There's no way you slept more than 24h, is there?");
+      setError("There's no way you slept more than 24h");
       return;
     }
     await updateWakeTime(entry.id, wakeTime);

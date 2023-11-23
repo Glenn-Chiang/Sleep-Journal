@@ -11,7 +11,6 @@ export const formatTime = (date: Date) => {
   return date.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
-    hour12: false,
   });
 };
 
@@ -37,3 +36,8 @@ export const convertDurationToHoursAndMinutes = (duration: number) => {
   return {hours, minutes}
 }
 
+export const calculateAverageTime = (timestamps: Date[]) => {
+  const sum = timestamps.reduce((sum, value) => sum + value.getTime(), 0)
+  const averageTime = new Date(sum / timestamps.length)
+  return averageTime
+}

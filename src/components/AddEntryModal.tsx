@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { EnergyScale } from "./EnergyScale";
 import { Modal } from "./Modal";
-import React from 'react';
+import React from "react";
 import { createEntry } from "@/actions/entries";
 
 type AddEntryModalProps = {
@@ -31,12 +31,12 @@ export const AddEntryModal = ({ close }: AddEntryModalProps) => {
   };
 
   const handleSubmit: React.FormEventHandler = async (event) => {
-    setIsPending(true)
-    event.preventDefault()
+    setIsPending(true);
+    event.preventDefault();
     // await createEntry({
     //   sleepTime: new Date(sleepTime)
     // })
-  }
+  };
 
   return (
     <Modal>

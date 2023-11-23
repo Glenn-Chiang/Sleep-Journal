@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CancelButton, SubmitButton } from "./buttons";
-import { updateActivity } from "@/actions/entries";
+import { updateActivity } from '../actions/entries/mutations';
 
 type ActivityEditorProps = {
   entryId: string;

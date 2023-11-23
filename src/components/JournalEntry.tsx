@@ -1,15 +1,10 @@
 "use client";
 
-import {
-  updateEnergyLevel,
-  updateSleepTime,
-  updateWakeTime,
-} from "@/actions/entries";
+import { updateEnergyLevel } from "@/actions/entries/mutations";
 import {
   calculateDuration,
   convertDurationToHoursAndMinutes,
-  formatDate,
-  formatDatetime,
+  formatDate
 } from "@/lib/dateTime";
 import {
   faBattery,
@@ -21,10 +16,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
+import { useState } from "react";
 import { ActivityEditor } from "./ActivityEditor";
 import { EnergyScale } from "./EnergyScale";
 import { TimeInput } from "./TimeInput";
-import { useState } from "react";
 
 type JournalEntryProps = {
   entry: Entry;
@@ -51,7 +46,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
         {sleepDate} - {wakeDate}
       </h2>
 
-      <div className="flex gap-2 items-center ">
+      <div className="flex gap-4 items-center ">
         <div className=" flex gap-2 items-center text-slate-500">
           <FontAwesomeIcon icon={faBed} />
           <span>Slept for</span>

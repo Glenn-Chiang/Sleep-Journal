@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "@/components/ErrorMessage";
-import { createEntry } from "@/actions/entries";
+import { createEntry } from '@/actions/entries/mutations';
 
 type EntryFormFields = {
   sleepTime: string;
@@ -52,12 +52,11 @@ export default function AddEntryPage() {
       });
 
       // Redirect to homepage on successful submission
-      router.push('/')
+      router.push("/");
     } catch (error) {
-      setError((error as Error).message)
-      setIsPending(false)
+      setError((error as Error).message);
+      setIsPending(false);
     }
-
   };
 
   return (
@@ -126,8 +125,8 @@ export default function AddEntryPage() {
           />
         </section>
 
-        {error && <ErrorMessage message={error}/>}
-        
+        {error && <ErrorMessage message={error} />}
+
         <div className="flex gap-4">
           <SubmitButton isPending={isPending}>Confirm</SubmitButton>
           <CancelButton onClick={() => router.back()} />
