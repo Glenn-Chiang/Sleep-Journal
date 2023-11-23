@@ -37,9 +37,19 @@ export const convertDurationToHoursAndMinutes = (duration: number) => {
 }
 
 export const calculateAverageTime = (timestamps: Date[]) => {
-  console.log(timestamps)
-  const sum = timestamps.reduce((sum, value) => sum + value.getTime(), 0)
-  const averageTime = new Date(sum / timestamps.length)
-  console.log('Average:', averageTime)
-  return averageTime
+  const minutesArray = timestamps.map((date) => {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return hours * 60 + minutes;
+  });
+
+  const totalMinutes = minutesArray.reduce((acc, val) => acc + val, 0);
+  const averageMinutes = totalMinutes / minutesArray.length;
+
+  const averageHours = Math.floor(averageMinutes / 60);
+  const averageMinutesRemainder = Math.floor(averageMinutes % 60);
+  const averageTime = new Date();
+  averageTime.setHours(averageHours, averageMinutesRemainder);
+
+  return averageTime;
 }

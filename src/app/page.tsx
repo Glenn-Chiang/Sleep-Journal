@@ -1,14 +1,12 @@
 import { getUserEntries } from "@/actions/entries/fetches";
 import { JournalEntry } from "@/components/JournalEntry";
+import { Summary } from "@/components/Summary";
 import { TopButton } from "@/components/buttons";
 import { getCurrentUser } from "@/lib/auth";
-import { calculateAverageTime, calculateDuration } from "@/lib/dateTime";
-import { faBed, faBook } from "@fortawesome/free-solid-svg-icons";
+import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
 import Link from "next/link";
-import { formatTime, convertDurationToHoursAndMinutes } from "../lib/dateTime";
-import { Summary } from "@/components/Summary";
 
 export default async function Home() {
   const currentUser = await getCurrentUser();
@@ -24,10 +22,10 @@ export default async function Home() {
         Add entry
       </Link>{" "}
       <section className="w-full flex flex-col gap-4">
-        <h2 className="text-start p-2 flex gap-2 items-center">
+        <h1 className="text-start p-2 flex gap-2 items-center">
           <FontAwesomeIcon icon={faBook} />
           Your Entries
-        </h2>
+        </h1>
         <EntriesList entries={entries} />
       </section>
       <TopButton />
