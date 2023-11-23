@@ -42,11 +42,11 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
 
   return (
     <article className="shadow bg-white p-4 rounded-xl w-full gap-8 grid grid-cols-1 sm:grid-cols-2">
-      <h2 className="sm:col-span-2 ">
+      <h2 className="col-span-2 ">
         {sleepDate} - {wakeDate}
       </h2>
 
-      <div className="flex gap-4 items-center ">
+      <div className="flex gap-4 items-center col-span-2 sm:col-span-1">
         <div className=" flex gap-2 items-center text-slate-500">
           <FontAwesomeIcon icon={faBed} />
           <span>Slept for</span>
@@ -56,7 +56,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
         </h2>
       </div>
 
-      <div className="flex flex-col gap-4 ">
+      <div className="flex flex-col gap-4 col-span-2 sm:col-span-1">
         <TimeInput
           label="Slept at"
           icon={faMoon}
@@ -75,7 +75,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
         <>
           <ActivityEditor entryId={entry.id} initialValue={activity} />
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
             <label className="text-slate-500 flex gap-2 items-center">
               <FontAwesomeIcon icon={faBattery} />
               Energy level

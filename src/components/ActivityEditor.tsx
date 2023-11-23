@@ -45,7 +45,7 @@ export const ActivityEditor = ({
   };
 
   return (
-    <section className="flex flex-col gap-2">
+    <section className="flex flex-col gap-2 col-span-2 sm:col-span-1">
       <div className="flex gap-4 items-center">
         <span className="text-slate-500">Activity before sleeping</span>
         <button
