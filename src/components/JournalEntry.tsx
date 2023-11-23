@@ -14,6 +14,8 @@ import {
 import {
   faBattery,
   faBed,
+  faChevronDown,
+  faChevronUp,
   faMoon,
   faSun,
 } from "@fortawesome/free-solid-svg-icons";
@@ -22,6 +24,7 @@ import { Entry } from "@prisma/client";
 import { ActivityEditor } from "./ActivityEditor";
 import { EnergyScale } from "./EnergyScale";
 import { TimeInput } from "./TimeInput";
+import { useState } from "react";
 
 type JournalEntryProps = {
   entry: Entry;
@@ -39,6 +42,8 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
   const handleEnergyClick = async (clickedLevel: number) => {
     await updateEnergyLevel(entry.id, clickedLevel);
   };
+
+  const [previewMode, setPreviewMode] = useState(true);
 
   return (
     <article className="shadow bg-white p-4 rounded-xl w-full gap-8 grid grid-cols-1 sm:grid-cols-2">
@@ -71,18 +76,34 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
         />
       </div>
 
-      <ActivityEditor entryId={entry.id} initialValue={activity} />
+      {!previewMode && (
+        <>
+          <ActivityEditor entryId={entry.id} initialValue={activity} />
 
-      <div className="flex flex-col gap-2">
-        <label className="text-slate-500 flex gap-2 items-center">
-          <FontAwesomeIcon icon={faBattery} />
-          Energy level
-        </label>
-        <EnergyScale
-          handleClick={handleEnergyClick}
-          selectedValue={energyLevel}
-        />
-      </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-slate-500 flex gap-2 items-center">
+              <FontAwesomeIcon icon={faBattery} />
+              Energy level
+            </label>
+            <EnergyScale
+              handleClick={handleEnergyClick}
+              selectedValue={energyLevel}
+            />
+          </div>
+        </>
+      )}
+
+      <button
+        onClick={() => setPreviewMode((prev) => !prev)}
+        className="flex gap-2 items-center justify-center text-sky-500 hover:bg-sky-100 w-max"
+      >
+        {previewMode ? (
+          <FontAwesomeIcon icon={faChevronDown} />
+        ) : (
+          <FontAwesomeIcon icon={faChevronUp} />
+        )}
+        {previewMode ? "Show more" : "Show less"}
+      </button>
     </article>
   );
 };
