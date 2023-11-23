@@ -25,16 +25,17 @@ export const formatDatetime = (date: Date) => {
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
-export const setTimeOfDate = (originalDate: Date, newTime: string) => {
-  const year = originalDate.getFullYear();
-  const month = originalDate.getMonth();
-  const day = originalDate.getDate();
+export const calculateDuration = (start: Date, end: Date | null) => {
+  if (!end) return 0
+  console.log(start)
+  console.log(end)
+  const durationInHours = (end.getTime() - start.getTime()) / 1000 / 3600
+  return durationInHours
+}
 
-  // Extracting hours and minutes from the new time string (e.g., "13:45")
-  const [hours, minutes] = newTime.split(":").map(Number);
+export const convertDurationToHoursAndMinutes = (duration: number) => {
+  const hours = Math.floor(duration)
+  const minutes = Math.round((duration % 1) * 60)
+  return {hours, minutes}
+}
 
-  // Creating a new date with the original date parts and the new time
-  const newDate = new Date(year, month, day, hours, minutes);
-
-  return newDate;
-};

@@ -5,11 +5,20 @@ import {
   updateSleepTime,
   updateWakeTime,
 } from "@/actions/entries";
-import { formatDate, formatDatetime, setTimeOfDate } from "@/lib/dateTime";
-import { faBattery, faBed, faSun } from "@fortawesome/free-solid-svg-icons";
+import {
+  calculateDuration,
+  convertDurationToHoursAndMinutes,
+  formatDate,
+  formatDatetime,
+} from "@/lib/dateTime";
+import {
+  faBattery,
+  faBed,
+  faMoon,
+  faSun,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
-import { formatTime } from "../lib/dateTime";
 import { ActivityEditor } from "./ActivityEditor";
 import { EnergyScale } from "./EnergyScale";
 
@@ -19,8 +28,12 @@ type JournalEntryProps = {
 
 export const JournalEntry = ({ entry }: JournalEntryProps) => {
   const { sleepTime, wakeTime, activity, energyLevel } = entry;
-  const sleepDate = formatDate(sleepTime); //TODO:Format date nicely with luxon
+  const sleepDate = formatDate(sleepTime);
   const wakeDate = wakeTime && formatDate(wakeTime);
+
+  const sleepDuration = calculateDuration(sleepTime, wakeTime);
+  const { hours: hoursOfSleep, minutes: minutesOfSleep } =
+    convertDurationToHoursAndMinutes(sleepDuration);
 
   const handleSleepTimeChange: React.ChangeEventHandler<
     HTMLInputElement
@@ -41,16 +54,27 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
   };
 
   return (
-    <article className="shadow bg-white p-4 rounded-xl w-full flex flex-col gap-4">
+    <article className="shadow bg-white p-4 rounded-xl w-full flex flex-col gap-8">
       <h2>
         {sleepDate} - {wakeDate}
       </h2>
-      <section className="flex gap-2">
+
+      <div className="flex gap-2 items-center">
+        <div className=" flex gap-2 items-center text-slate-500">
+          <FontAwesomeIcon icon={faBed} />
+          <span>Slept for</span>
+        </div>
+        <h2 className="text-sky-500">
+          {hoursOfSleep}h {minutesOfSleep}min
+        </h2>
+      </div>
+
+      <div className="flex gap-2">
         <label
           htmlFor={`sleepTime-${entry.id}`}
-          className="text-slate-500 flex gap-1 items-center"
+          className="text-slate-500 flex gap-1 items-center flex-col sm:flex-row"
         >
-          <FontAwesomeIcon icon={faBed} />
+          <FontAwesomeIcon icon={faMoon} />
           Slept at
         </label>{" "}
         <input
@@ -60,11 +84,11 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
           onChange={handleSleepTimeChange}
           className="bg-slate-100"
         />
-      </section>
-      <section className="flex gap-2">
+      </div>
+      <div className="flex gap-2">
         <label
           htmlFor={`wakeTime-${entry.id}`}
-          className="text-slate-500 flex gap-1 items-center"
+          className="text-slate-500 flex gap-1 items-center flex-col sm:flex-row"
         >
           <FontAwesomeIcon icon={faSun} />
           Woke at
@@ -76,7 +100,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
           onChange={handleWakeTimeChange}
           className="bg-slate-100"
         />
-      </section>
+      </div>
 
       <ActivityEditor entryId={entry.id} initialValue={activity} />
 

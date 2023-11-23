@@ -26,7 +26,7 @@ export const EnergyScale = ({
   ];
 
   return (
-    <ul className="flex gap-4  w-full">
+    <ul className="grid grid-cols-2 sm:grid-cols-4 justify-items-center w-full">
       {options.map((option) => (
         <EnergyButton
           key={option.value}
@@ -60,7 +60,7 @@ const EnergyButton = ({
     <button
       type="button"
       onClick={onClick}
-      className={`flex flex-col gap-2 items-center p-2 text-sky-500  w-1/4 ${
+      className={`flex flex-col gap-2 items-center justify-center p-2 text-sky-500 w-full ${
         selected ? "bg-sky-200 text-sky-600" : "hover:bg-sky-100"
       }`}
     >
