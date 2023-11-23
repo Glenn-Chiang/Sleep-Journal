@@ -65,13 +65,13 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
         <TimeInput
           label="Slept at"
           icon={faMoon}
-          entryId={entry.id}
+          entry={entry}
           defaultValue={sleepTime}
         />
         <TimeInput
           label="Woke at"
           icon={faSun}
-          entryId={entry.id}
+          entry={entry}
           defaultValue={wakeTime}
         />
       </div>
