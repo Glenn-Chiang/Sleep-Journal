@@ -1,6 +1,10 @@
 "use client";
 
-import { updateEnergyLevel } from "@/actions/entries/mutations";
+import {
+  updateActivity,
+  updateEnergyLevel,
+  updateRemarks,
+} from "@/actions/entries/mutations";
 import {
   calculateDuration,
   convertDurationToHoursAndMinutes,
@@ -17,7 +21,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
 import { useState } from "react";
-import { ActivityEditor } from "./ActivityEditor";
+import { TextEditor } from "./TextEditor";
 import { EnergyScale } from "./EnergyScale";
 import { TimeInput } from "./TimeInput";
 import { DeleteEntryModal } from "./DeleteEntryModal";
@@ -27,7 +31,7 @@ type JournalEntryProps = {
 };
 
 export const JournalEntry = ({ entry }: JournalEntryProps) => {
-  const { sleepTime, wakeTime, activity, energyLevel } = entry;
+  const { sleepTime, wakeTime, activity, energyLevel, remarks } = entry;
   const sleepDate = formatDate(sleepTime);
   const wakeDate = wakeTime && formatDate(wakeTime);
 
@@ -37,6 +41,14 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
 
   const handleEnergyClick = async (clickedLevel: number) => {
     await updateEnergyLevel(entry.id, clickedLevel);
+  };
+
+  const handleActivityUpdate = async (newActivity: string | null) => {
+    await updateActivity(entry.id, newActivity);
+  };
+
+  const handleRemarksUpdate = async (newRemarks: string | null) => {
+    await updateRemarks(entry.id, newRemarks);
   };
 
   const [previewMode, setPreviewMode] = useState(true);
@@ -75,7 +87,11 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
 
       {!previewMode && (
         <>
-          <ActivityEditor entryId={entry.id} initialValue={activity} />
+          <TextEditor
+            label="Activity before sleeping"
+            onSubmit={(input: string | null) => handleActivityUpdate(input)}
+            initialValue={activity}
+          />
 
           <div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
             <label className="text-slate-500 flex gap-2 items-center">
@@ -87,6 +103,12 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
               selectedValue={energyLevel}
             />
           </div>
+
+          <TextEditor
+            label="Remarks"
+            onSubmit={(input: string | null) => handleRemarksUpdate(input)}
+            initialValue={remarks}
+          />
         </>
       )}
 

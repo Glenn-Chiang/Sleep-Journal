@@ -102,6 +102,30 @@ export const updateActivity = async (
   return entry;
 };
 
+export const updateRemarks = async (
+  entryId: string,
+  remarks: string | null
+) => {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    throw new Error("Unauthenticated");
+  }
+
+  const entry = await prisma.entry.update({
+    where: {
+      id: entryId,
+    },
+    data: {
+      remarks,
+    },
+  });
+
+  revalidatePath("/");
+  return entry;
+};
+
+
+
 export const updateEnergyLevel = async (
   entryId: string,
   energyLevel: number

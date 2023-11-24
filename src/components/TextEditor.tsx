@@ -2,17 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CancelButton, SubmitButton } from "./buttons";
-import { updateActivity } from '../actions/entries/mutations';
+import { updateActivity } from "../actions/entries/mutations";
 
-type ActivityEditorProps = {
-  entryId: string;
+type TextEditorProps = {
+  label: string
   initialValue: string | null;
+  onSubmit: (input: string | null) => void;
 };
 
-export const ActivityEditor = ({
-  entryId,
+export const TextEditor = ({
+  label,
+  onSubmit,
   initialValue,
-}: ActivityEditorProps) => {
+}: TextEditorProps) => {
   // Toggling of inline editing for activity field
   const [inEditMode, setInEditMode] = useState(false);
   const textRef = useRef<HTMLTextAreaElement>(null);
@@ -35,8 +37,9 @@ export const ActivityEditor = ({
   // Submission
   const handleSubmit = async () => {
     setIsPending(true);
-    await updateActivity(entryId, input);
+    onSubmit(input);
     setInEditMode(false);
+    setIsPending(false)
   };
 
   const handleCancel = () => {
@@ -47,7 +50,7 @@ export const ActivityEditor = ({
   return (
     <section className="flex flex-col gap-2 col-span-2 sm:col-span-1">
       <div className="flex gap-4 items-center">
-        <span className="text-slate-500">Activity before sleeping</span>
+        <span className="text-slate-500">{label}</span>
         <button
           onClick={() => setInEditMode((prev) => !prev)}
           className="w-max px-4 bg-sky-100 text-sky-500"
