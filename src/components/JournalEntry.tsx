@@ -57,9 +57,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
 
   return (
     <article
-      className={`shadow ${
-        pending ? "bg-teal-100" : "bg-white"
-      } p-4 rounded-xl w-full gap-8 grid grid-cols-1 sm:grid-cols-2`}
+      className={`shadow bg-white p-4 rounded-xl w-full gap-8 grid grid-cols-1 sm:grid-cols-2`}
     >
       <div className="flex justify-between w-full col-span-2">
         <h2 className="col-span-2 ">
