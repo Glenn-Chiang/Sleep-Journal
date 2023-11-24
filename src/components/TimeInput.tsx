@@ -40,36 +40,41 @@ export const TimeInput = ({
   const handleSleepTimeChange = async (sleepTime: Date) => {
     // Waketime cannot be earlier than sleepTime
     if (entry.wakeTime && sleepTime > entry.wakeTime) {
-      setError("You can't wake up before you sleep!");
+      setError("You can't have woken up before sleeping");
       return;
     }
     // Waketime cannot be 24h later than sleepTime
     if (calculateDuration(sleepTime, entry.wakeTime) > 24) {
-      setError("There's no way you slept more than 24h");
+      setError("You likely didn't sleep for more than 24h");
       return;
     }
     await updateSleepTime(entry.id, sleepTime);
     setError(null);
   };
 
-  const handleWakeTimeChange = async (wakeTime: Date) => {
+  const handleWakeTimeChange = async (newWakeTime: Date) => {
     // Waketime cannot be earlier than sleepTime
-    if (wakeTime < entry.sleepTime) {
-      setError("You can't wake up before you sleep!");
+    if (newWakeTime < entry.sleepTime) {
+      setError("You can't have woken up before sleeping");
       return;
     }
     // Waketime cannot be 24h later than sleepTime
-    if (calculateDuration(entry.sleepTime, wakeTime) > 24) {
-      setError("There's no way you slept more than 24h");
+    if (calculateDuration(entry.sleepTime, newWakeTime) > 24) {
+      setError("You likely didn't sleep for more than 24h");
       return;
     }
-    await updateWakeTime(entry.id, wakeTime);
+
+    await updateWakeTime(entry.id, newWakeTime);
     setError(null);
-    toast("Entry updated!", {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 2000,
-      type: "success",
-    });
+
+    // If wakeTime was previously null and is now set to a value, notify the user
+    if (!entry.wakeTime) {
+      toast("Entry updated!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        type: "success",
+      });
+    }
   };
 
   return (
