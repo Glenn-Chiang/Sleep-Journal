@@ -4,6 +4,7 @@ import { Navbar } from '@/components/Navbar'
 import '../globals.css'
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { AuthProvider } from '@/components/AuthProvider';
 config.autoAddCss = false;
 
 
@@ -21,10 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        <Navbar />
-        <main className="flex min-h-screen flex-col items-center pt-20 p-4 gap-8 sm:gap-10">
-          {children}
-        </main>
+        <AuthProvider>
+          <Navbar />
+          <main className="flex min-h-screen flex-col items-center pt-20 p-4 gap-8 sm:gap-10">
+            {children}
+          </main>
+        </AuthProvider>
       </body>
     </html>
   );
