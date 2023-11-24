@@ -51,11 +51,17 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
     await updateRemarks(entry.id, newRemarks);
   };
 
+  const pending = !wakeTime
   const [previewMode, setPreviewMode] = useState(true);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
   return (
-    <article className="shadow bg-white p-4 rounded-xl w-full gap-8 grid grid-cols-1 sm:grid-cols-2">
+    <article
+      className={`shadow ${
+        pending ? "bg-teal-100" : "bg-white"
+      } p-4 rounded-xl w-full gap-8 grid grid-cols-1 sm:grid-cols-2`}
+    >
+      {pending && <span className="bg-teal-200 text-teal-600 p-2 w-max rounded-full">Pending</span>}
       <h2 className="col-span-2 ">
         {sleepDate} - {wakeDate}
       </h2>
@@ -72,13 +78,13 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
 
       <div className="flex flex-col gap-4 col-span-2 sm:col-span-1">
         <TimeInput
-          label="Slept at"
+          label="Slept"
           icon={faMoon}
           entry={entry}
           defaultValue={sleepTime}
         />
         <TimeInput
-          label="Woke at"
+          label="Woke"
           icon={faSun}
           entry={entry}
           defaultValue={wakeTime}

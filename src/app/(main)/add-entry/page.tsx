@@ -99,13 +99,18 @@ export default function AddEntryPage() {
         </section>
 
         <section className="flex flex-col gap-2">
-          <label htmlFor="wakeTime" className="flex gap-2 items-center">
-            <FontAwesomeIcon icon={faSun} className="text-yellow-500" />
-            When did you wake up?
-          </label>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="wakeTime" className="flex gap-2 items-center">
+              <FontAwesomeIcon icon={faSun} className="text-yellow-500" />
+              When did you wake up?
+            </label>
+            <small className="text-slate-500">
+              If you&apos;re going to sleep now, you can fill this in later
+            </small>
+          </div>
           <input
             id="wakeTime"
-            {...register('wakeTime')}
+            {...register("wakeTime")}
             type="datetime-local"
             className="w-min"
             disabled={isPending}
@@ -114,11 +119,14 @@ export default function AddEntryPage() {
 
         <section className="flex flex-col gap-2">
           <div className="flex gap-2 items-center">
-            <FontAwesomeIcon icon={faBattery} className="text-teal-500" />
-            <p className="flex flex-col">
+            <p className="flex flex-col gap-1">
               <span>
-                How would you rate your energy level throughout the day?
-              </span>{" "}
+                How would you rate your energy level throughout the day?{" "}
+                <FontAwesomeIcon icon={faBattery} className="text-teal-500" />
+              </span>
+              <small className="text-slate-500">
+                If you&apos;re going to sleep now, you can fill this in later
+              </small>
             </p>
           </div>
           <EnergyScale
@@ -137,7 +145,7 @@ export default function AddEntryPage() {
           )}
           <textarea
             id="remarks"
-            {...register("remarks", { required: "Please fill in this field" })}
+            {...register("remarks")}
             disabled={isPending}
           />
         </section>
