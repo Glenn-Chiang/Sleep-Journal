@@ -22,14 +22,13 @@ export default async function Home({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const currentUser = await getCurrentUser();
-  const currenUserId = currentUser?.id;
   const entries = currentUser ? await getUserEntries(currentUser.id) : [];
+  const completedEntries = entries.filter((entry) => entry.wakeTime);
+  const pendingEntries = entries.filter((entry) => !entry.wakeTime);
 
   const statusParam = searchParams.status;
   const displayedEntries =
-    statusParam === "pending"
-      ? await getUserPendingEntries(currenUserId)
-      : await getUserCompletedEntries(currenUserId);
+    statusParam === "pending" ? pendingEntries : completedEntries;
 
   return (
     <>
@@ -54,7 +53,7 @@ export default async function Home({
             }`}
           >
             <FontAwesomeIcon icon={faHourglassHalf} />
-            Pending
+            Pending ({pendingEntries.length})
           </Link>
           <Link
             href={"?status=completed"}

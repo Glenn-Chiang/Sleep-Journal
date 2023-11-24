@@ -51,7 +51,6 @@ export const TimeInput = ({
   };
 
   const handleWakeTimeChange = async (wakeTime: Date) => {
-    console.log('what the fuck?')
     // Waketime cannot be earlier than sleepTime
     if (wakeTime < entry.sleepTime) {
       setError("You can't wake up before you sleep!");
