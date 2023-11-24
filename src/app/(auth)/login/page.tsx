@@ -1,6 +1,25 @@
+"use client"
+
+import { ErrorMessage } from "@/components/ErrorMessage";
+import { SubmitButton } from "@/components/buttons";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Login() {
+  const [isPending, setIsPending] = useState(false)
+  const [error, setError] = useState<null | string>(null)
+
+  const handleLogin = async () => {
+    setIsPending(true)
+    try {
+      await signIn('google', {callbackUrl: '/'})
+    } catch (error ){
+      setError((error as Error).message)
+      setIsPending(false)
+    }
+  }
+
   return (
     <main className=" flex flex-col sm:flex-row sm:gap-12 gap-8 justify-center items-center p-10 bg-white shadow rounded-xl w-full">
       <div className="flex justify-center">
@@ -17,7 +36,10 @@ export default function Login() {
           Sleep Journal
         </h1>
         <p className="">Monitor your sleep</p>
-        <button className="flex gap-2 items-center shadow bg-slate-100 hover:bg-slate-200">
+
+        {error && <ErrorMessage message={error}/>}
+
+        <SubmitButton onClick={handleLogin} isPending={isPending}>
           <Image
             src={"https://google.com/favicon.ico"}
             alt=""
@@ -25,7 +47,7 @@ export default function Login() {
             height={20}
           />
           Continue with Google
-        </button>
+        </SubmitButton>
       </div>
     </main>
   );

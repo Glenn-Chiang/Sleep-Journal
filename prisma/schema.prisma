@@ -21,7 +21,7 @@ model User {
 model Entry {
   id String @id @default(uuid())
   userId Int 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) // Deleting a user will also delete all their entries
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   // pending Boolean?

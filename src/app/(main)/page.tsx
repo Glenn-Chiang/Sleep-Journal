@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export default async function Home() {
   const currentUser = await getCurrentUser();
-  const entries = await getUserEntries(currentUser.id);
+  const entries = currentUser ? await getUserEntries(currentUser.id) : [];
 
   return (
     <>

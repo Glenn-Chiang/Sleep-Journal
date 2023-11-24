@@ -12,10 +12,13 @@ type EntryFields = {
 };
 
 export const createEntry = async (entryFields: EntryFields) => {
-  const currentUserId = (await getCurrentUser()).id;
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    throw new Error('Unauthenticated')
+  }
 
   const entry = await prisma.entry.create({
-    data: { ...entryFields, userId: currentUserId },
+    data: { ...entryFields, userId: currentUser.id },
   });
 
   revalidatePath("/");
@@ -23,7 +26,10 @@ export const createEntry = async (entryFields: EntryFields) => {
 };
 
 export const deleteEntry = async (entryId: string) => {
-  const currentUserId = (await getCurrentUser()).id;
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    throw new Error("Unauthenticated");
+  }
 
   const entry = await prisma.entry.delete({
     where: {
@@ -36,7 +42,10 @@ export const deleteEntry = async (entryId: string) => {
 };
 
 export const updateSleepTime = async (entryId: string, sleepTime: Date) => {
-  const currentUserId = (await getCurrentUser()).id;
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    throw new Error("Unauthenticated");
+  }
 
   const entry = await prisma.entry.update({
     where: {
@@ -52,7 +61,10 @@ export const updateSleepTime = async (entryId: string, sleepTime: Date) => {
 };
 
 export const updateWakeTime = async (entryId: string, wakeTime: Date) => {
-  const currentUserId = (await getCurrentUser()).id;
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    throw new Error("Unauthenticated");
+  }
 
   const entry = await prisma.entry.update({
     where: {
@@ -71,7 +83,10 @@ export const updateActivity = async (
   entryId: string,
   activity: string | null
 ) => {
-  const currentUserId = (await getCurrentUser()).id;
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    throw new Error("Unauthenticated");
+  }
 
   const entry = await prisma.entry.update({
     where: {
@@ -90,7 +105,10 @@ export const updateEnergyLevel = async (
   entryId: string,
   energyLevel: number
 ) => {
-  const currentUserId = (await getCurrentUser()).id;
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    throw new Error("Unauthenticated");
+  }
 
   // Energy level can only be 1-4
   if (energyLevel < 1 || energyLevel > 4) {
