@@ -1,3 +1,5 @@
+"use client"
+
 import { updateSleepTime, updateWakeTime } from "@/actions/entries/mutations";
 import { calculateDuration, formatDatetime } from "@/lib/dateTime";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
@@ -26,9 +28,9 @@ export const TimeInput = ({
   ) => {
     const newTime = new Date(event.target.value);
 
-    if (label === "Slept at") {
+    if (label === "Slept") {
       await handleSleepTimeChange(newTime);
-    } else if (label === "Woke at") {
+    } else if (label === "Woke") {
       await handleWakeTimeChange(newTime);
     }
   };
@@ -49,6 +51,7 @@ export const TimeInput = ({
   };
 
   const handleWakeTimeChange = async (wakeTime: Date) => {
+    console.log('what the fuck?')
     // Waketime cannot be earlier than sleepTime
     if (wakeTime < entry.sleepTime) {
       setError("You can't wake up before you sleep!");
