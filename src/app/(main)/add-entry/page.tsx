@@ -14,6 +14,7 @@ type EntryFormFields = {
   sleepTime: string;
   wakeTime?: string;
   activity?: string;
+  remarks?: string;
 };
 
 export default function AddEntryPage() {
@@ -41,7 +42,7 @@ export default function AddEntryPage() {
   const onSubmit: SubmitHandler<EntryFormFields> = async (formFields) => {
     setIsPending(true);
 
-    const { sleepTime, wakeTime, activity } = formFields;
+    const { sleepTime, wakeTime, activity, remarks } = formFields;
 
     try {
       await createEntry({
@@ -49,6 +50,7 @@ export default function AddEntryPage() {
         wakeTime: wakeTime ? new Date(wakeTime) : undefined,
         activity: activity || undefined,
         energyLevel,
+        remarks
       });
 
       // Redirect to homepage on successful submission
@@ -102,7 +104,8 @@ export default function AddEntryPage() {
             When did you wake up?
           </label>
           <input
-            id="sleepTime"
+            id="wakeTime"
+            {...register('wakeTime')}
             type="datetime-local"
             className="w-min"
             disabled={isPending}
@@ -116,12 +119,26 @@ export default function AddEntryPage() {
               <span>
                 How would you rate your energy level throughout the day?
               </span>{" "}
-              <span className="text-slate-500">(after this sleep)</span>
             </p>
           </div>
           <EnergyScale
             handleClick={handleEnergyClick}
             selectedValue={energyLevel}
+          />
+        </section>
+
+        <section className="flex flex-col gap-2">
+          <label htmlFor="remarks" className="flex gap-2 flex-col sm:flex-row">
+            Do you have any additional remarks?{" "}
+            <span className="text-slate-500">(optional)</span>
+          </label>
+          {errors.remarks?.message && (
+            <ErrorMessage message={errors.remarks.message} />
+          )}
+          <textarea
+            id="remarks"
+            {...register("remarks", { required: "Please fill in this field" })}
+            disabled={isPending}
           />
         </section>
 

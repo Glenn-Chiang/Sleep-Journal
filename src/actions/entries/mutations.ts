@@ -9,6 +9,7 @@ type EntryFields = {
   wakeTime?: Date;
   activity?: string;
   energyLevel?: number;
+  remarks?: string;
 };
 
 export const createEntry = async (entryFields: EntryFields) => {
