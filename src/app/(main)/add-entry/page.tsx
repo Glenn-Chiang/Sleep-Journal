@@ -10,6 +10,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "@/components/ErrorMessage";
 import { createEntry } from "@/actions/entries/mutations";
 import { toast } from "react-toastify";
+import { notify } from "@/lib/notifications";
 
 type EntryFormFields = {
   sleepTime: string;
@@ -54,11 +55,7 @@ export default function AddEntryPage() {
         remarks,
       });
 
-      toast("Entry added!", {
-        position: toast.POSITION.TOP_CENTER,
-        autoClose: 5000,
-        type: "success"
-      });
+      notify("Entry added!")
 
       // Redirect to homepage on successful submission
       if (wakeTime) {

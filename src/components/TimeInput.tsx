@@ -8,6 +8,7 @@ import { Entry } from "@prisma/client";
 import { useState } from "react";
 import { ErrorMessage } from "./ErrorMessage";
 import { toast } from "react-toastify";
+import { notify } from "@/lib/notifications";
 
 type TimeInputProps = {
   label: string;
@@ -27,7 +28,7 @@ export const TimeInput = ({
   const handleTimeChange: React.FocusEventHandler<HTMLInputElement> = async (
     event
   ) => {
-    if (!event.target.value) return
+    if (!event.target.value) return;
     const newTime = new Date(event.target.value);
 
     if (label === "Slept") {
@@ -69,11 +70,7 @@ export const TimeInput = ({
 
     // If wakeTime was previously null and is now set to a value, notify the user
     if (!entry.wakeTime) {
-      toast("Entry updated!", {
-        position: toast.POSITION.TOP_CENTER,
-        autoClose: 2000,
-        type: "success",
-      });
+      notify("Entry updated");
     }
   };
 
