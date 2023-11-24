@@ -56,10 +56,10 @@ export default function AddEntryPage() {
 
       toast("Entry added!", {
         position: toast.POSITION.TOP_CENTER,
-        autoClose: 2000,
+        autoClose: 5000,
         type: "success"
       });
-      
+
       // Redirect to homepage on successful submission
       if (wakeTime) {
         router.push("/");
