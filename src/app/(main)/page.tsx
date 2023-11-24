@@ -1,4 +1,4 @@
-import { getUserEntries } from "@/actions/entries/fetches";
+import { getUserCompletedEntries, getUserEntries, getUserPendingEntries } from "@/actions/entries/fetches";
 import { JournalEntry } from "@/components/JournalEntry";
 import { Summary } from "@/components/Summary";
 import { TopButton } from "@/components/buttons";
@@ -11,6 +11,8 @@ import Link from "next/link";
 export default async function Home() {
   const currentUser = await getCurrentUser();
   const entries = currentUser ? await getUserEntries(currentUser.id) : [];
+  const pendingEntries = currentUser ? await getUserPendingEntries(currentUser.id) : []
+  const completedEntries = currentUser ? await getUserCompletedEntries(currentUser.id) : []
 
   return (
     <>
@@ -26,7 +28,16 @@ export default async function Home() {
           <FontAwesomeIcon icon={faBook} />
           Your Entries
         </h1>
-        <EntriesList entries={entries} />
+        <div className="flex flex-col gap-8">
+          <section className="flex flex-col gap-4">
+            <h2>Pending entries</h2>
+            <EntriesList entries={pendingEntries}/>
+          </section>
+          <section className="flex flex-col gap-4">
+            <h2>Completed entries</h2>
+            <EntriesList entries={completedEntries} />
+          </section>
+        </div>
       </section>
       <TopButton />
     </>

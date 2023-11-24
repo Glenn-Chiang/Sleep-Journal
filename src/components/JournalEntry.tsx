@@ -61,10 +61,12 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
         pending ? "bg-teal-100" : "bg-white"
       } p-4 rounded-xl w-full gap-8 grid grid-cols-1 sm:grid-cols-2`}
     >
-      {pending && <span className="bg-teal-200 text-teal-600 p-2 w-max rounded-full">Pending</span>}
-      <h2 className="col-span-2 ">
-        {sleepDate} - {wakeDate}
-      </h2>
+      <div className="flex justify-between w-full col-span-2">
+        <h2 className="col-span-2 ">
+          {sleepDate} - {wakeDate}
+        </h2>
+        {pending && <span className="bg-teal-200 text-teal-600 p-2 w-max rounded-full">Pending</span>}
+      </div>
 
       <div className="flex gap-4 items-center col-span-2 sm:col-span-1">
         <div className=" flex gap-2 items-center text-slate-500">

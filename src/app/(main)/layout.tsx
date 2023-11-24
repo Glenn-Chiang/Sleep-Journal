@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Montserrat } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { Navbar } from '@/components/Navbar'
 import '../globals.css'
 import { config } from "@fortawesome/fontawesome-svg-core";
@@ -8,7 +8,7 @@ import { AuthProvider } from '@/components/AuthProvider';
 config.autoAddCss = false;
 
 
-const font = Montserrat({ subsets: ['latin'] })
+const font = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Sleep Journal',
