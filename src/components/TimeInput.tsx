@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { updateSleepTime, updateWakeTime } from "@/actions/entries/mutations";
 import { calculateDuration, formatDatetime } from "@/lib/dateTime";
@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
 import { useState } from "react";
 import { ErrorMessage } from "./ErrorMessage";
+import { toast } from "react-toastify";
 
 type TimeInputProps = {
   label: string;
@@ -23,9 +24,10 @@ export const TimeInput = ({
 }: TimeInputProps) => {
   const [error, setError] = useState<string | null>(null);
 
-  const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = async (
+  const handleTimeChange: React.FocusEventHandler<HTMLInputElement> = async (
     event
   ) => {
+    if (!event.target.value) return
     const newTime = new Date(event.target.value);
 
     if (label === "Slept") {
@@ -63,6 +65,11 @@ export const TimeInput = ({
     }
     await updateWakeTime(entry.id, wakeTime);
     setError(null);
+    toast("Entry updated!", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 2000,
+      type: "success",
+    });
   };
 
   return (

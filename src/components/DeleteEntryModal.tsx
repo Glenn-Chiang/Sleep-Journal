@@ -20,12 +20,13 @@ export const DeleteEntryModal = ({ entryId, close }: DeleteEntryModalProps) => {
     try {
       setIsPending(true);
       await deleteEntry(entryId);
-      close();
       toast("Entry deleted!", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2000,
         type: 'success'
       });
+      close();
+      
     } catch (error) {
       setError((error as Error).message);
     }
