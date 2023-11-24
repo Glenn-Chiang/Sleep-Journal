@@ -80,7 +80,7 @@ export const TimeInput = ({
           id={`${label} ${entry.id}`}
           type="datetime-local"
           defaultValue={defaultValue ? formatDatetime(defaultValue) : undefined}
-          onChange={handleTimeChange}
+          onBlur={handleTimeChange}
           onKeyDown={(event) => event.preventDefault()}
           className="bg-slate-100"
         />
