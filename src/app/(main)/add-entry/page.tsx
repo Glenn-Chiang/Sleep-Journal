@@ -55,10 +55,16 @@ export default function AddEntryPage() {
       });
 
       // Redirect to homepage on successful submission
-      router.push("/");
+      if (wakeTime) {
+        router.push("/");
+      } else {
+        router.push("/?status=pending")
+      }
+
       toast("Entry added!", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2000,
+        type: "success"
       });
     } catch (error) {
       setError((error as Error).message);
