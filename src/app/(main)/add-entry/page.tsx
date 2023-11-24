@@ -54,6 +54,12 @@ export default function AddEntryPage() {
         remarks,
       });
 
+      toast("Entry added!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        type: "success"
+      });
+      
       // Redirect to homepage on successful submission
       if (wakeTime) {
         router.push("/");
@@ -61,11 +67,6 @@ export default function AddEntryPage() {
         router.push("/?status=pending")
       }
 
-      toast("Entry added!", {
-        position: toast.POSITION.TOP_CENTER,
-        autoClose: 2000,
-        type: "success"
-      });
     } catch (error) {
       setError((error as Error).message);
       setIsPending(false);
