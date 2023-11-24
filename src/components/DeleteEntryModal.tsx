@@ -5,6 +5,7 @@ import { Modal } from "./Modal";
 import { useState } from "react";
 import { CancelButton, SubmitButton } from "./buttons";
 import { ErrorMessage } from "./ErrorMessage";
+import { toast } from "react-toastify";
 
 type DeleteEntryModalProps = {
   entryId: string;
@@ -20,6 +21,11 @@ export const DeleteEntryModal = ({ entryId, close }: DeleteEntryModalProps) => {
       setIsPending(true);
       await deleteEntry(entryId);
       close();
+      toast("Entry deleted!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        type: 'success'
+      });
     } catch (error) {
       setError((error as Error).message);
     }

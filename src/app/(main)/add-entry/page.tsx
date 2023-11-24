@@ -8,7 +8,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "@/components/ErrorMessage";
-import { createEntry } from '@/actions/entries/mutations';
+import { createEntry } from "@/actions/entries/mutations";
+import { toast } from "react-toastify";
 
 type EntryFormFields = {
   sleepTime: string;
@@ -50,11 +51,15 @@ export default function AddEntryPage() {
         wakeTime: wakeTime ? new Date(wakeTime) : undefined,
         activity: activity || undefined,
         energyLevel,
-        remarks
+        remarks,
       });
 
       // Redirect to homepage on successful submission
       router.push("/");
+      toast("Entry added!", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+      });
     } catch (error) {
       setError((error as Error).message);
       setIsPending(false);

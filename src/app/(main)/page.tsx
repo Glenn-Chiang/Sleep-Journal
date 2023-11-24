@@ -15,6 +15,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
 import Link from "next/link";
+import { ToastContainer } from "react-toastify";
 
 export default async function Home({
   searchParams,
