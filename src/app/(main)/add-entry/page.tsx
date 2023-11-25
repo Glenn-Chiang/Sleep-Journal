@@ -84,14 +84,16 @@ export default function AddEntryPage() {
         remarks,
       });
 
-      notify("Entry added!");
-
+      
       // Redirect to homepage on successful submission
       if (wakeTime) {
         router.push("/");
       } else {
         router.push("/?status=pending");
       }
+
+      notify("Entry added!");
+      
     } catch (error) {
       setError((error as Error).message);
       setIsPending(false);
