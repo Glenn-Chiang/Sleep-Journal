@@ -1,7 +1,7 @@
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 
 export const notify = (message: string) => {
   toast(message, {
     type: "success",
   });
-}
+};
