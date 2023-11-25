@@ -14,6 +14,7 @@ export const formatTime = (date: Date) => {
   });
 };
 
+// Required format to be passed to datetime input element
 export const formatDatetime = (date: Date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");

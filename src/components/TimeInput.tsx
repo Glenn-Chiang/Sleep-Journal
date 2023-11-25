@@ -41,7 +41,7 @@ export const TimeInput = ({
   const handleSleepTimeChange = async (sleepTime: Date) => {
     // Waketime cannot be earlier than sleepTime
     if (entry.wakeTime && sleepTime > entry.wakeTime) {
-      setError("You can't have woken up before sleeping");
+      setError("You couldn't have woken up before sleeping");
       return;
     }
     // Waketime cannot be 24h later than sleepTime
@@ -56,7 +56,7 @@ export const TimeInput = ({
   const handleWakeTimeChange = async (newWakeTime: Date) => {
     // Waketime cannot be earlier than sleepTime
     if (newWakeTime < entry.sleepTime) {
-      setError("You can't have woken up before sleeping");
+      setError("You couldn't have woken up before sleeping");
       return;
     }
     // Waketime cannot be 24h later than sleepTime

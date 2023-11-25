@@ -11,6 +11,7 @@ import { ErrorMessage } from "@/components/ErrorMessage";
 import { createEntry } from "@/actions/entries/mutations";
 import { toast } from "react-toastify";
 import { notify } from "@/lib/notifications";
+import { calculateDuration } from "@/lib/timeCalculations";
 
 type EntryFormFields = {
   sleepTime: string;
@@ -20,16 +21,44 @@ type EntryFormFields = {
 };
 
 export default function AddEntryPage() {
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<EntryFormFields>();
+
+  const sleepTime = watch("sleepTime");
+  const wakeTime = watch("wakeTime");
+
+  const validateSleepTime = (sleepTime: string) => {
+    if (
+      wakeTime &&
+      calculateDuration(new Date(sleepTime), new Date(wakeTime)) > 24
+    ) {
+      return "You likely didn't sleep for more than 24 hours. Perhaps you entered the wrong date?";
+    }
+    return true;
+  };
+
+  const validateWakeTime = (wakeTime: string | undefined) => {
+    if (wakeTime && new Date(wakeTime) < new Date(sleepTime)) {
+      return "You couldn't have woken up before sleeping";
+    }
+    if (
+      wakeTime &&
+      calculateDuration(new Date(sleepTime), new Date(wakeTime)) > 24
+    ) {
+      return "You likely didn't sleep for more than 24 hours. Perhaps you entered the wrong date?";
+    }
+    return true;
+  };
+
+  // Energy scale is handled separately from other form fields
   const [energyLevel, setEnergyLevel] = useState<number | undefined>(undefined);
-
-  const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   const handleEnergyClick = (clickedLevel: number) => {
     if (clickedLevel === energyLevel) {
       // Clicking a selected button will unselect it
@@ -55,15 +84,14 @@ export default function AddEntryPage() {
         remarks,
       });
 
-      notify("Entry added!")
+      notify("Entry added!");
 
       // Redirect to homepage on successful submission
       if (wakeTime) {
         router.push("/");
       } else {
-        router.push("/?status=pending")
+        router.push("/?status=pending");
       }
-
     } catch (error) {
       setError((error as Error).message);
       setIsPending(false);
@@ -87,6 +115,7 @@ export default function AddEntryPage() {
             type="datetime-local"
             {...register("sleepTime", {
               required: "Please fill in this field",
+              validate: validateSleepTime,
             })}
             className="w-min"
             disabled={isPending}
@@ -117,9 +146,10 @@ export default function AddEntryPage() {
               If you&apos;re going to sleep now, you can fill this in later
             </small>
           </div>
+          {errors.wakeTime?.message && <ErrorMessage message={errors.wakeTime.message}/>}
           <input
             id="wakeTime"
-            {...register("wakeTime")}
+            {...register("wakeTime", { validate: validateWakeTime })}
             type="datetime-local"
             className="w-min"
             disabled={isPending}
