@@ -84,11 +84,9 @@ export default function AddEntryPage() {
         remarks,
       });
 
-      
       // Redirect to homepage on successful submission
-      router.push("/", {scroll: false});
+      router.push("/", { scroll: false });
       notify("Entry added!");
-      
     } catch (error) {
       setError((error as Error).message);
       setIsPending(false);
@@ -143,7 +141,9 @@ export default function AddEntryPage() {
               If you&apos;re going to sleep now, you can fill this in later
             </small>
           </div>
-          {errors.wakeTime?.message && <ErrorMessage message={errors.wakeTime.message}/>}
+          {errors.wakeTime?.message && (
+            <ErrorMessage message={errors.wakeTime.message} />
+          )}
           <input
             id="wakeTime"
             {...register("wakeTime", { validate: validateWakeTime })}
@@ -166,6 +166,7 @@ export default function AddEntryPage() {
             </p>
           </div>
           <EnergyScale
+            disabled={false}
             handleClick={handleEnergyClick}
             selectedValue={energyLevel}
           />
