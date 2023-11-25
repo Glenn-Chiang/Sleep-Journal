@@ -54,8 +54,6 @@ export const TimeInput = ({
     setError(null);
   };
 
-  const router = useRouter()
-
   const handleWakeTimeChange = async (newWakeTime: Date) => {
     // Waketime cannot be earlier than sleepTime
     if (newWakeTime < entry.sleepTime) {
@@ -71,11 +69,6 @@ export const TimeInput = ({
     await updateWakeTime(entry.id, newWakeTime);
     setError(null);
 
-    // If wakeTime was previously null and is now set to a value, notify the user
-    if (!entry.wakeTime) {
-      // router.push('/?status=completed')    
-      notify("Entry completed");
-    }
   };
 
   return (
