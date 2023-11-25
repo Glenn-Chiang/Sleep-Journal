@@ -73,7 +73,7 @@ export const TimeInput = ({
 
     // If wakeTime was previously null and is now set to a value, notify the user
     if (!entry.wakeTime) {
-      router.push('/?status=completed')    
+      // router.push('/?status=completed')    
       notify("Entry completed");
     }
   };

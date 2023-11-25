@@ -8,7 +8,7 @@ export const ToastProvider = ({children}: {children: React.ReactNode}) => {
   return (
     <>
       {children}
-      <ToastContainer position="top-center" autoClose={false}/>      
+      <ToastContainer position="top-center" autoClose={2000}/>      
     </>
   )
 }

@@ -87,9 +87,9 @@ export default function AddEntryPage() {
       
       // Redirect to homepage on successful submission
       if (wakeTime) {
-        router.push("/");
+        router.push("/", {scroll: false});
       } else {
-        router.push("/?status=pending");
+        router.push("/?status=pending", {scroll: false});
       }
 
       notify("Entry added!");
