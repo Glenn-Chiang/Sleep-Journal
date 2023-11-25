@@ -1,10 +1,22 @@
 "use client";
 
-import { calculateAverageTime, calculateDuration } from "@/lib/dateTime";
-import { faBed, faChartArea, faChartBar, faPieChart } from "@fortawesome/free-solid-svg-icons";
+import {
+  calculateAverageSleepTime,
+  calculateAverageWakeTime,
+  calculateDuration,
+} from "@/lib/timeCalculations";
+import {
+  faBed,
+  faChartArea,
+  faChartBar,
+  faPieChart,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
-import { convertDurationToHoursAndMinutes, formatTime } from "../lib/dateTime";
+import {
+  convertDurationToHoursAndMinutes,
+  formatTime,
+} from "../lib/timeCalculations";
 
 type SummaryProps = {
   entries: Entry[];
@@ -12,12 +24,12 @@ type SummaryProps = {
 
 export const Summary = ({ entries }: SummaryProps) => {
   const sleepTimes = entries.map((entry) => entry.sleepTime);
-  const averageSleepTime = calculateAverageTime(sleepTimes);
+  const averageSleepTime = calculateAverageSleepTime(sleepTimes);
 
   const wakeTimes = entries
     .filter((entry) => !!entry.wakeTime) // Only consider completed entries
     .map((entry) => entry.wakeTime) as Date[];
-  const averageWakeTime = calculateAverageTime(wakeTimes);
+  const averageWakeTime = calculateAverageWakeTime(wakeTimes);
 
   const sleepDurations = entries
     .filter((entry) => !!entry.wakeTime) // Only consider completed entries
@@ -37,10 +49,10 @@ export const Summary = ({ entries }: SummaryProps) => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-slate-500 bg-white rounded-xl p-4 w-full shadow">
         <div className="flex flex-col gap-4 text-black">
           <h2>Average sleep duration</h2>
-          <div className="flex gap-4 items-center text-sky-500">
+          <div className="flex gap-4 items-center text-sky-500 text-3xl sm:text-4xl">
             <FontAwesomeIcon icon={faBed} />
             {entries.length ? (
-              <span className="text-3xl sm:text-4xl ">
+              <span>
                 {averageSleepDuration.hours}h {averageSleepDuration.minutes}min
               </span>
             ) : (

@@ -1,7 +1,7 @@
 "use client";
 
 import { updateSleepTime, updateWakeTime } from "@/actions/entries/mutations";
-import { calculateDuration, formatDatetime } from "@/lib/dateTime";
+import { calculateDuration, formatDatetime } from "@/lib/timeCalculations";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";

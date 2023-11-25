@@ -9,7 +9,7 @@ import {
   calculateDuration,
   convertDurationToHoursAndMinutes,
   formatDate,
-} from "@/lib/dateTime";
+} from "@/lib/timeCalculations";
 import {
   faBattery,
   faBed,
@@ -51,7 +51,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
     await updateRemarks(entry.id, newRemarks);
   };
 
-  const pending = !wakeTime
+  const pending = !wakeTime;
   const [previewMode, setPreviewMode] = useState(true);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
@@ -63,7 +63,11 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
         <h2 className="col-span-2 ">
           {sleepDate} - {wakeDate}
         </h2>
-        {pending && <span className="bg-teal-200 text-teal-600 p-2 w-max rounded-full">Pending</span>}
+        {pending && (
+          <span className="bg-teal-200 text-teal-600 p-2 w-max rounded-full">
+            Pending
+          </span>
+        )}
       </div>
 
       <div className="flex gap-4 items-center col-span-2 sm:col-span-1">
