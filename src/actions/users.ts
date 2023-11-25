@@ -10,3 +10,12 @@ export const getUsers = async () => {
   const users = await prisma.user.findMany({})
   return users
 }
+
+export const getUser = async (userId: number) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId
+    }
+  })
+  return user
+}

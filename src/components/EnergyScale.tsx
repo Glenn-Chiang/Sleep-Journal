@@ -12,11 +12,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 type EnergyScaleProps = {
   handleClick: (value: number) => void;
   selectedValue?: number | null;
+  disabled: boolean;
 };
 
 export const EnergyScale = ({
   selectedValue,
   handleClick,
+  disabled,
 }: EnergyScaleProps) => {
   const options = [
     { label: "Always tired", value: 1, icon: faFaceDizzy },
@@ -29,6 +31,7 @@ export const EnergyScale = ({
     <ul className="grid grid-cols-2 sm:grid-cols-4 justify-items-center w-full">
       {options.map((option) => (
         <EnergyButton
+          disabled={disabled}
           key={option.value}
           label={option.label}
           value={option.value}
@@ -47,21 +50,27 @@ type EnergyButtonProps = {
   icon: IconDefinition;
   onClick: () => void;
   selected: boolean;
+  disabled: boolean;
 };
 
 const EnergyButton = ({
   label,
-  value,
   icon,
   onClick,
   selected,
+  disabled,
 }: EnergyButtonProps) => {
   return (
     <button
+      disabled={disabled}
       type="button"
       onClick={onClick}
       className={`flex flex-col gap-2 items-center justify-center p-2 text-sky-500 w-full ${
-        selected ? "bg-sky-200 text-sky-600" : "hover:bg-sky-100"
+        selected
+          ? "bg-sky-200 text-sky-600"
+          : disabled
+          ? ""
+          : "hover:bg-sky-100"
       }`}
     >
       <FontAwesomeIcon icon={icon} className="text-sky-500" />

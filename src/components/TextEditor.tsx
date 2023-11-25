@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CancelButton, SubmitButton } from "./buttons";
-import { updateActivity } from "../actions/entries/mutations";
+import { useCurrentUser } from "@/lib/auth";
 
 type TextEditorProps = {
-  label: string
+  editable: boolean;
+  label: string;
   initialValue: string | null;
   onSubmit: (input: string | null) => void;
 };
@@ -14,6 +15,7 @@ export const TextEditor = ({
   label,
   onSubmit,
   initialValue,
+  editable,
 }: TextEditorProps) => {
   // Toggling of inline editing for activity field
   const [inEditMode, setInEditMode] = useState(false);
@@ -39,7 +41,7 @@ export const TextEditor = ({
     setIsPending(true);
     onSubmit(input);
     setInEditMode(false);
-    setIsPending(false)
+    setIsPending(false);
   };
 
   const handleCancel = () => {
@@ -51,12 +53,14 @@ export const TextEditor = ({
     <section className="flex flex-col gap-2 col-span-2 sm:col-span-1">
       <div className="flex gap-4 items-center">
         <span className="text-slate-500">{label}</span>
-        <button
-          onClick={() => setInEditMode((prev) => !prev)}
-          className="w-max px-4 bg-sky-100 text-sky-500"
-        >
-          Edit
-        </button>
+        {editable && (
+          <button
+            onClick={() => setInEditMode((prev) => !prev)}
+            className="w-max px-4 bg-sky-100 text-sky-500"
+          >
+            Edit
+          </button>
+        )}
       </div>
       <textarea
         onChange={handleInputChange}

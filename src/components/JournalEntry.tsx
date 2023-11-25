@@ -25,6 +25,7 @@ import { TextEditor } from "./TextEditor";
 import { EnergyScale } from "./EnergyScale";
 import { TimeInput } from "./TimeInput";
 import { DeleteEntryModal } from "./DeleteEntryModal";
+import { getCurrentUser, useCurrentUser } from "@/lib/auth";
 
 type JournalEntryProps = {
   entry: Entry;
@@ -54,6 +55,10 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
   const pending = !wakeTime;
   const [previewMode, setPreviewMode] = useState(true);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+
+  const currentUser = useCurrentUser();
+  // const authorized = currentUser?.id === entry.userId;
+  const authorized = false;
 
   return (
     <article
@@ -86,18 +91,21 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
           icon={faMoon}
           entry={entry}
           defaultValue={sleepTime}
+          editable={authorized}
         />
         <TimeInput
           label="Woke"
           icon={faSun}
           entry={entry}
           defaultValue={wakeTime}
+          editable={authorized}
         />
       </div>
 
       {!previewMode && (
         <>
           <TextEditor
+            editable={authorized}
             label="Activity before sleeping"
             onSubmit={(input: string | null) => handleActivityUpdate(input)}
             initialValue={activity}
@@ -109,12 +117,14 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
               Energy level
             </label>
             <EnergyScale
+              disabled={!authorized}
               handleClick={handleEnergyClick}
               selectedValue={energyLevel}
             />
           </div>
 
           <TextEditor
+            editable={authorized}
             label="Remarks"
             onSubmit={(input: string | null) => handleRemarksUpdate(input)}
             initialValue={remarks}
@@ -135,12 +145,14 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
           {previewMode ? "Show more" : "Show less"}
         </button>
 
-        <button
-          onClick={() => setDeleteModalIsOpen(true)}
-          className="bg-slate-100 text-red-500 hover:bg-red-100"
-        >
-          Delete
-        </button>
+        {authorized && (
+          <button
+            onClick={() => setDeleteModalIsOpen(true)}
+            className="bg-slate-100 text-red-500 hover:bg-red-100"
+          >
+            Delete
+          </button>
+        )}
       </div>
       {deleteModalIsOpen && (
         <DeleteEntryModal

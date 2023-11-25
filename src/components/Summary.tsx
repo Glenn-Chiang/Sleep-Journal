@@ -7,9 +7,7 @@ import {
 } from "@/lib/timeCalculations";
 import {
   faBed,
-  faChartArea,
-  faChartBar,
-  faPieChart,
+  faChartBar
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
@@ -62,13 +60,13 @@ export const Summary = ({ entries }: SummaryProps) => {
         </div>
 
         <div className="flex gap-2 items-center sm:flex-col">
-          <span className="text-center">Average time you go to bed</span>
+          <span className="text-center">Average bedtime</span>
           <span className="text-sky-500 sm:text-2xl">
             {entries.length ? formatTime(averageSleepTime) : "-"}
           </span>
         </div>
         <div className="flex gap-2 items-center sm:flex-col">
-          <span className="text-center">Average time you wake up</span>
+          <span className="text-center">Average wake-up time</span>
           <span className="text-sky-500 sm:text-2xl">
             {entries.length ? formatTime(averageWakeTime) : "-"}
           </span>

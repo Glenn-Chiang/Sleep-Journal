@@ -1,21 +1,15 @@
 import {
-  getUserCompletedEntries,
-  getUserEntries,
-  getUserPendingEntries,
+  getUserEntries
 } from "@/actions/entries/fetches";
-import { JournalEntry } from "@/components/JournalEntry";
+import { EntriesList } from "@/components/EntriesList";
 import { Summary } from "@/components/Summary";
 import { TopButton } from "@/components/buttons";
 import { getCurrentUser } from "@/lib/auth";
 import {
-  faBook,
-  faCheckCircle,
-  faHourglassHalf,
+  faBook
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Entry } from "@prisma/client";
 import Link from "next/link";
-import { ToastContainer } from "react-toastify";
 
 export default async function Home({
   searchParams,
@@ -46,20 +40,3 @@ export default async function Home({
   );
 }
 
-type EntriesListProps = {
-  entries: Entry[];
-};
-
-const EntriesList = ({ entries }: EntriesListProps) => {
-  if (!entries.length) {
-    return <p className="text-slate-500">No entries</p>;
-  }
-
-  return (
-    <ul className="w-full flex flex-col gap-4">
-      {entries.map((entry) => (
-        <JournalEntry key={entry.id} entry={entry} />
-      ))}
-    </ul>
-  );
-};

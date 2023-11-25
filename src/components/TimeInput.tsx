@@ -16,6 +16,7 @@ type TimeInputProps = {
   icon: IconDefinition;
   entry: Entry;
   defaultValue: Date | null;
+  editable: boolean
 };
 
 export const TimeInput = ({
@@ -23,6 +24,7 @@ export const TimeInput = ({
   icon,
   entry,
   defaultValue,
+  editable
 }: TimeInputProps) => {
   const [error, setError] = useState<string | null>(null);
 
@@ -88,6 +90,7 @@ export const TimeInput = ({
           onChange={handleTimeChange}
           onKeyDown={(event) => event.preventDefault()}
           className="bg-slate-100"
+          disabled={!editable}
         />
       </div>
       {error && <ErrorMessage message={error} />}

@@ -1,6 +1,7 @@
 import { NextAuthOptions, getServerSession } from "next-auth"
 import GoogleProvider from 'next-auth/providers/google'
 import prisma from "./db"
+import { useSession } from "next-auth/react"
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -73,4 +74,11 @@ export const getCurrentUser = async () => {
   const user = session?.user
   if (!user) return null
   return {id: user.id, admin: user.admin};
+};
+
+export const useCurrentUser = () => {
+  const session = useSession();
+  const user = session.data?.user;
+  if (!user) return null;
+  return { id: user.id };
 };
