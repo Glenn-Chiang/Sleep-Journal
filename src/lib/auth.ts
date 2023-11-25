@@ -44,6 +44,9 @@ export const authOptions: NextAuthOptions = {
         if (user) {
           token.userId = user.id
         }
+        if (user?.admin) {
+          token.admin = true
+        }
       }
       return token
     },
@@ -52,6 +55,7 @@ export const authOptions: NextAuthOptions = {
     async session({session, token}) {
       if (session.user ) {
         session.user.id = token.userId
+        session.user.admin = token.admin
       }
       return session
     }
@@ -68,5 +72,5 @@ export const getCurrentUser = async () => {
   const session = await getServerSession(authOptions)
   const user = session?.user
   if (!user) return null
-  return {id: user.id};
+  return {id: user.id, admin: user.admin};
 };
