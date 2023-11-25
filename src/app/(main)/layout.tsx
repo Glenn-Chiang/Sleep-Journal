@@ -23,12 +23,11 @@ export default function RootLayout({
     <AuthProvider>
       <html lang="en">
         <body className={font.className}>
-          <ToastProvider>
-            <Navbar />
-            <main className="flex min-h-screen flex-col items-center pt-20 p-4 gap-8 sm:gap-10">
-              {children}
-            </main>
-          </ToastProvider>
+          <ToastProvider />
+          <Navbar />
+          <main className="flex min-h-screen flex-col items-center pt-20 p-4 gap-8 sm:gap-10">
+            {children}
+          </main>
         </body>
       </html>
     </AuthProvider>
