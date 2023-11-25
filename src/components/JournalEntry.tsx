@@ -57,8 +57,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
   const currentUser = useCurrentUser();
-  // const authorized = currentUser?.id === entry.userId;
-  const authorized = false;
+  const authorized = currentUser?.id === entry.userId;
 
   return (
     <article
