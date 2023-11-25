@@ -59,7 +59,8 @@ export const authOptions: NextAuthOptions = {
         session.user.admin = token.admin
       }
       return session
-    }
+    },
+
   },
 
   pages: {
