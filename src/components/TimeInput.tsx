@@ -9,6 +9,7 @@ import { useState } from "react";
 import { ErrorMessage } from "./ErrorMessage";
 import { toast } from "react-toastify";
 import { notify } from "@/lib/notifications";
+import { useRouter } from "next/navigation";
 
 type TimeInputProps = {
   label: string;
@@ -53,15 +54,17 @@ export const TimeInput = ({
     setError(null);
   };
 
+  const router = useRouter()
+
   const handleWakeTimeChange = async (newWakeTime: Date) => {
     // Waketime cannot be earlier than sleepTime
     if (newWakeTime < entry.sleepTime) {
-      setError("You couldn't have woken up before sleeping");
+      setError("You couldn't have woken up before sleeping. Perhaps you entered the wrong date?");
       return;
     }
     // Waketime cannot be 24h later than sleepTime
     if (calculateDuration(entry.sleepTime, newWakeTime) > 24) {
-      setError("You likely didn't sleep for more than 24h");
+      setError("You likely didn't sleep for more than 24h. Perhaps you entered the wrong date?");
       return;
     }
 
@@ -70,7 +73,8 @@ export const TimeInput = ({
 
     // If wakeTime was previously null and is now set to a value, notify the user
     if (!entry.wakeTime) {
-      notify("Entry updated");
+      router.push('/?status=completed')    
+      notify("Entry completed");
     }
   };
 
