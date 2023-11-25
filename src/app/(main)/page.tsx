@@ -24,12 +24,6 @@ export default async function Home({
 }) {
   const currentUser = await getCurrentUser();
   const entries = currentUser ? await getUserEntries(currentUser.id) : [];
-  const completedEntries = entries.filter((entry) => entry.wakeTime);
-  const pendingEntries = entries.filter((entry) => !entry.wakeTime);
-
-  const statusParam = searchParams.status;
-  const displayedEntries =
-    statusParam === "pending" ? pendingEntries : completedEntries;
 
   return (
     <>
@@ -45,29 +39,7 @@ export default async function Home({
           <FontAwesomeIcon icon={faBook} />
           Your Entries
         </h1>
-        <nav className="flex gap-4">
-          <Link
-            href={"?status=pending"}
-            className={`flex gap-2 items-center text-xl ${
-              statusParam === "pending" &&
-              "text-sky-500 border-b-2 border-sky-500"
-            }`}
-          >
-            <FontAwesomeIcon icon={faHourglassHalf} />
-            Pending ({pendingEntries.length})
-          </Link>
-          <Link
-            href={"?status=completed"}
-            className={`flex gap-2 items-center text-xl ${
-              statusParam !== "pending" &&
-              "text-sky-500 border-b-2 border-sky-500"
-            }`}
-          >
-            <FontAwesomeIcon icon={faCheckCircle} />
-            Completed
-          </Link>
-        </nav>
-        <EntriesList entries={displayedEntries} />
+        <EntriesList entries={entries} />
       </section>
       <TopButton />
     </>
