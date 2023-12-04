@@ -65,7 +65,7 @@ export const EnergyButton = ({
       disabled={disabled}
       type="button"
       onClick={onClick}
-      className={`flex flex-col gap-2 items-center justify-start p-2 text-sky-500 w-full h-full ${
+      className={`flex flex-col gap-2 items-center justify-start p-2 text-sky-500 w-full ${
         selected
           ? "bg-sky-200 text-sky-600"
           : disabled

@@ -100,13 +100,13 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
       {!previewMode && (
         <>
           {readMaterial ? (
-            <p className="bg-emerald-100 p-2 rounded text-emerald-600 w-max">
+            <p className="bg-emerald-100 p-2 rounded text-emerald-600 w-fit">
               I read the material for at least 30min before sleeping{" "}
               <FontAwesomeIcon icon={faCheck} />
             </p>
           ) : (
             <>
-              <p className="bg-yellow-100 p-2 rounded text-yellow-700 w-max">
+              <p className="bg-yellow-100 p-2 rounded text-yellow-700 w-fit">
                 I did not read the material for at least 30min before sleeping
               </p>
               <div className="flex flex-col gap-2">
@@ -123,7 +123,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
           )}
 
           {energyLevel && (
-            <div className="flex flex-col gap-2 ">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <label className="text-slate-500 flex gap-2 items-center">
                 <FontAwesomeIcon icon={faBattery} className="text-teal-500" />
                 Energy level

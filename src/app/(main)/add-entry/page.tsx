@@ -106,9 +106,9 @@ export default function AddEntryPage() {
       <h1 className="pt-4 text-center">Record your Sleep</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-10 sm:w-3/4 md:w-1/2"
+        className="flex flex-col gap-12 md:w-3/4 px-2"
       >
-        <fieldset className="flex flex-col gap-4 ">
+        <fieldset className="flex flex-col gap-8 ">
           <legend className="text-xl font-medium pb-4">Before bed</legend>
           <section className="flex flex-col gap-2">
             <label htmlFor="sleepTime" className="flex gap-2 items-center">
@@ -179,7 +179,7 @@ export default function AddEntryPage() {
           </section>
         </fieldset>
 
-        <fieldset className="flex flex-col gap-4">
+        <fieldset className="flex flex-col gap-8">
           <legend className="text-xl font-medium pb-4">After waking up</legend>
           <p className="text-slate-500">
             If you&apos;re going to sleep now, you can fill in this section
