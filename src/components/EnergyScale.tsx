@@ -21,10 +21,10 @@ export const EnergyScale = ({
   disabled,
 }: EnergyScaleProps) => {
   const options = [
-    { label: "Always tired", value: 1, icon: faFaceDizzy },
-    { label: "Mostly tired", value: 2, icon: faFaceTired },
-    { label: "Sometimes tired", value: 3, icon: faFaceGrimace },
-    { label: "Not tired", value: 4, icon: faFaceSmile },
+    { label: "Rarely (0-1 times)", value: 4, icon: faFaceSmile},
+    { label: "Sometimes (2-3 times)", value: 3, icon: faFaceGrimace },
+    { label: "Often (4-5 times)", value: 2, icon: faFaceTired },
+    { label: "Constantly ", value: 1, icon: faFaceDizzy },
   ];
 
   return (
