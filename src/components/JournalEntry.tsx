@@ -22,7 +22,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
 import { useState } from "react";
 import { TextEditor } from "./TextEditor";
-import { EnergyScale } from "./EnergyScale";
+import { EnergyButton, EnergyScale, energyOptions } from "./EnergyScale";
 import { TimeInput } from "./TimeInput";
 import { DeleteEntryModal } from "./DeleteEntryModal";
 import { getCurrentUser, useCurrentUser } from "@/lib/auth";
@@ -39,6 +39,8 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
   const sleepDuration = calculateDuration(sleepTime, wakeTime);
   const { hours: hoursOfSleep, minutes: minutesOfSleep } =
     convertDurationToHoursAndMinutes(sleepDuration);
+
+  const energyOption = energyOptions.find(energyOption => energyOption.value === energyLevel)
 
   const pending = !wakeTime;
   const [previewMode, setPreviewMode] = useState(true);
@@ -99,8 +101,9 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
           <div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
             <label className="text-slate-500 flex gap-2 items-center">
               <FontAwesomeIcon icon={faBattery} />
-              Energy level
+              How often did I feel tired?
             </label>
+            {energyOption && <EnergyButton label={energyOption?.label} icon={energyOption.icon} disabled={true}/>}
           </div>
 
           {remarks && (

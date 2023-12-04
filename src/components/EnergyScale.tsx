@@ -15,21 +15,21 @@ type EnergyScaleProps = {
   disabled: boolean;
 };
 
+export const energyOptions = [
+  { label: "Rarely (0-1 times)", value: 4, icon: faFaceSmile },
+  { label: "Sometimes (2-3 times)", value: 3, icon: faFaceGrimace },
+  { label: "Often (4-5 times)", value: 2, icon: faFaceTired },
+  { label: "Constantly ", value: 1, icon: faFaceDizzy },
+];
+
 export const EnergyScale = ({
   selectedValue,
   handleClick,
   disabled,
 }: EnergyScaleProps) => {
-  const options = [
-    { label: "Rarely (0-1 times)", value: 4, icon: faFaceSmile},
-    { label: "Sometimes (2-3 times)", value: 3, icon: faFaceGrimace },
-    { label: "Often (4-5 times)", value: 2, icon: faFaceTired },
-    { label: "Constantly ", value: 1, icon: faFaceDizzy },
-  ];
-
   return (
     <ul className="grid grid-cols-2 sm:grid-cols-4 justify-items-center w-full">
-      {options.map((option) => (
+      {energyOptions.map((option) => (
         <EnergyButton
           disabled={disabled}
           key={option.value}
@@ -46,14 +46,14 @@ export const EnergyScale = ({
 
 type EnergyButtonProps = {
   label: string;
-  value: number;
+  value?: number;
   icon: IconDefinition;
-  onClick: () => void;
-  selected: boolean;
-  disabled: boolean;
+  onClick?: () => void;
+  selected?: boolean;
+  disabled?: boolean;
 };
 
-const EnergyButton = ({
+export const EnergyButton = ({
   label,
   icon,
   onClick,
