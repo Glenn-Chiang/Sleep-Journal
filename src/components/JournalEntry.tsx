@@ -40,18 +40,6 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
   const { hours: hoursOfSleep, minutes: minutesOfSleep } =
     convertDurationToHoursAndMinutes(sleepDuration);
 
-  const handleEnergyClick = async (clickedLevel: number) => {
-    await updateEnergyLevel(entry.id, clickedLevel);
-  };
-
-  const handleActivityUpdate = async (newActivity: string | null) => {
-    await updateActivity(entry.id, newActivity);
-  };
-
-  const handleRemarksUpdate = async (newRemarks: string | null) => {
-    await updateRemarks(entry.id, newRemarks);
-  };
-
   const pending = !wakeTime;
   const [previewMode, setPreviewMode] = useState(true);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
@@ -85,49 +73,42 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
       </div>
 
       <div className="flex flex-col gap-4 col-span-2 sm:col-span-1">
-        <TimeInput
-          label="Slept"
-          icon={faMoon}
-          entry={entry}
-          defaultValue={sleepTime}
-          editable={authorized}
-        />
-        <TimeInput
-          label="Woke"
-          icon={faSun}
-          entry={entry}
-          defaultValue={wakeTime}
-          editable={authorized}
-        />
+        <div className="flex items-center gap-2">
+          <span className="flex gap-1 items-center">
+            <FontAwesomeIcon icon={faMoon} className="text-sky-500" />
+            <span className="text-slate-500">Slept at</span>
+          </span>
+          <span>{sleepDate}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="flex gap-1 items-center">
+            <FontAwesomeIcon icon={faSun} className="text-yellow-500" />
+            <span className="text-slate-500">Woke at</span>
+          </span>
+          <span>{wakeDate || "-"}</span>
+        </div>
       </div>
 
       {!previewMode && (
         <>
-          <TextEditor
-            editable={authorized}
-            label="Activity before sleeping"
-            onSubmit={(input: string | null) => handleActivityUpdate(input)}
-            initialValue={activity}
-          />
+          <div className="flex flex-col gap-2">
+            <p>Activity before sleeping</p>
+            <p className="bg-slate-100 p-2 rounded">{activity}</p>
+          </div>
 
           <div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
             <label className="text-slate-500 flex gap-2 items-center">
               <FontAwesomeIcon icon={faBattery} />
               Energy level
             </label>
-            <EnergyScale
-              disabled={!authorized}
-              handleClick={handleEnergyClick}
-              selectedValue={energyLevel}
-            />
           </div>
 
-          <TextEditor
-            editable={authorized}
-            label="Remarks"
-            onSubmit={(input: string | null) => handleRemarksUpdate(input)}
-            initialValue={remarks}
-          />
+          {remarks && (
+            <div className="flex flex-col gap-2">
+              <p>Remarks</p>
+              <p className="bg-slate-100 p-2 rounded">{remarks}</p>
+            </div>
+          )}
         </>
       )}
 

@@ -7,24 +7,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
 import { useState } from "react";
 import { ErrorMessage } from "./ErrorMessage";
-import { toast } from "react-toastify";
-import { notify } from "@/lib/notifications";
-import { useRouter } from "next/navigation";
 
 type TimeInputProps = {
   label: string;
   icon: IconDefinition;
-  entry: Entry;
-  defaultValue: Date | null;
-  editable: boolean
+  value: Date | null;
 };
 
 export const TimeInput = ({
   label,
   icon,
   entry,
-  defaultValue,
-  editable
+  value: defaultValue,
+  editable,
 }: TimeInputProps) => {
   const [error, setError] = useState<string | null>(null);
 
@@ -44,12 +39,16 @@ export const TimeInput = ({
   const handleSleepTimeChange = async (sleepTime: Date) => {
     // Waketime cannot be earlier than sleepTime
     if (entry.wakeTime && sleepTime > entry.wakeTime) {
-      setError("You couldn't have woken up before sleeping. Perhaps you entered the wrong date?");
+      setError(
+        "You couldn't have woken up before sleeping. Perhaps you entered the wrong date?"
+      );
       return;
     }
     // Waketime cannot be 24h later than sleepTime
     if (calculateDuration(sleepTime, entry.wakeTime) > 24) {
-      setError("You likely didn't sleep for more than 24h. Perhaps you entered the wrong date?");
+      setError(
+        "You likely didn't sleep for more than 24h. Perhaps you entered the wrong date?"
+      );
       return;
     }
     await updateSleepTime(entry.id, sleepTime);
@@ -59,18 +58,21 @@ export const TimeInput = ({
   const handleWakeTimeChange = async (newWakeTime: Date) => {
     // Waketime cannot be earlier than sleepTime
     if (newWakeTime < entry.sleepTime) {
-      setError("You couldn't have woken up before sleeping. Perhaps you entered the wrong date?");
+      setError(
+        "You couldn't have woken up before sleeping. Perhaps you entered the wrong date?"
+      );
       return;
     }
     // Waketime cannot be 24h later than sleepTime
     if (calculateDuration(entry.sleepTime, newWakeTime) > 24) {
-      setError("You likely didn't sleep for more than 24h. Perhaps you entered the wrong date?");
+      setError(
+        "You likely didn't sleep for more than 24h. Perhaps you entered the wrong date?"
+      );
       return;
     }
 
     await updateWakeTime(entry.id, newWakeTime);
     setError(null);
-
   };
 
   return (
