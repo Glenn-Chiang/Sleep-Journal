@@ -81,12 +81,15 @@ export default function AddEntryPage() {
       await createEntry({
         sleepTime: new Date(sleepTime), // Date from input field is a string, so we convert it to an actual date
         wakeTime: wakeTime ? new Date(wakeTime) : undefined,
+        readMaterial,
+        reason: readMaterial ? undefined : reasonForNotReading,
+        activity: readMaterial ? undefined : activity,
         energyLevel,
         remarks,
       });
 
       // Redirect to homepage on successful submission
-      router.push("/", { scroll: false });
+      router.push("/");
       notify("Entry added!");
     } catch (error) {
       setError((error as Error).message);

@@ -7,6 +7,8 @@ import { revalidatePath } from "next/cache";
 type EntryFields = {
   sleepTime: Date;
   wakeTime?: Date;
+  readMaterial: boolean;
+  reason?: string;
   activity?: string;
   energyLevel?: number;
   remarks?: string;

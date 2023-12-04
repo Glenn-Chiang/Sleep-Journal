@@ -27,7 +27,9 @@ model Entry {
   updatedAt DateTime @updatedAt
   sleepTime DateTime
   wakeTime DateTime?
-  activity String?
+  readMaterial Boolean?
+  reason String? // Required if readMaterial is false
+  activity String? // Required if readMaterial is false
   energyLevel Int?
   remarks String?
 }
