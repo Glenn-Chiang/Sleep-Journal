@@ -16,10 +16,10 @@ type EnergyScaleProps = {
 };
 
 export const energyOptions = [
-  { label: "Rarely (0-1 times)", value: 4, icon: faFaceSmile },
-  { label: "Sometimes (2-3 times)", value: 3, icon: faFaceGrimace },
-  { label: "Often (4-5 times)", value: 2, icon: faFaceTired },
-  { label: "Constantly ", value: 1, icon: faFaceDizzy },
+  { label: "Rarely tired (0-1 times)", value: 4, icon: faFaceSmile },
+  { label: "Sometimes tired (2-3 times)", value: 3, icon: faFaceGrimace },
+  { label: "Often tired (4-5 times)", value: 2, icon: faFaceTired },
+  { label: "Constantly tired", value: 1, icon: faFaceDizzy },
 ];
 
 export const EnergyScale = ({
@@ -65,7 +65,7 @@ export const EnergyButton = ({
       disabled={disabled}
       type="button"
       onClick={onClick}
-      className={`flex flex-col gap-2 items-center justify-center p-2 text-sky-500 w-full ${
+      className={`flex flex-col gap-2 items-center justify-start p-2 text-sky-500 w-full h-full ${
         selected
           ? "bg-sky-200 text-sky-600"
           : disabled

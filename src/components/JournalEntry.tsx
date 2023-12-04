@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  updateActivity,
-  updateEnergyLevel,
-  updateRemarks,
-} from "@/actions/entries/mutations";
+import { useCurrentUser } from "@/lib/auth";
 import {
   calculateDuration,
   convertDurationToHoursAndMinutes,
@@ -15,24 +11,22 @@ import {
   faBed,
   faChevronDown,
   faChevronUp,
+  faCoffee,
   faMoon,
   faSun,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Entry } from "@prisma/client";
 import { useState } from "react";
-import { TextEditor } from "./TextEditor";
-import { EnergyButton, EnergyScale, energyOptions } from "./EnergyScale";
-import { TimeInput } from "./TimeInput";
 import { DeleteEntryModal } from "./DeleteEntryModal";
-import { getCurrentUser, useCurrentUser } from "@/lib/auth";
+import { EnergyButton, energyOptions } from "./EnergyScale";
 
 type JournalEntryProps = {
   entry: Entry;
 };
 
 export const JournalEntry = ({ entry }: JournalEntryProps) => {
-  const { sleepTime, wakeTime, activity, energyLevel, remarks } = entry;
+  const { sleepTime, wakeTime, readMaterial, reason, activity, energyLevel, caffeineEffect, remarks } = entry;
   const sleepDate = formatDate(sleepTime);
   const wakeDate = wakeTime && formatDate(wakeTime);
 
@@ -100,15 +94,20 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
 
           <div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
             <label className="text-slate-500 flex gap-2 items-center">
-              <FontAwesomeIcon icon={faBattery} />
-              How often did I feel tired?
+              <FontAwesomeIcon icon={faBattery} className="text-teal-500"/>
+              Energy level
             </label>
             {energyOption && <EnergyButton label={energyOption?.label} icon={energyOption.icon} disabled={true}/>}
           </div>
 
+          <div className="flex gap-2 items-center">
+            <FontAwesomeIcon icon={faCoffee} className="text-amber-900"/>
+            <p className="text-slate-500">{caffeineEffect ? "Caffeine affected my sleep": "Caffeine did not affect my sleep"}</p>
+          </div>
+
           {remarks && (
             <div className="flex flex-col gap-2">
-              <p>Remarks</p>
+              <p className="text-slate-500">Remarks</p>
               <p className="bg-slate-100 p-2 rounded">{remarks}</p>
             </div>
           )}

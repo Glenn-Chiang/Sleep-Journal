@@ -16,6 +16,7 @@ import {
   faBattery,
   faBed,
   faBookOpen,
+  faCoffee,
   faSun,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -220,7 +221,10 @@ export default function AddEntryPage() {
           </section>
 
           <div className="flex flex-col gap-2">
-            <p>Did caffeine affect your sleep?</p>
+            <p className="flex gap-2 items-center">
+              <FontAwesomeIcon icon={faCoffee} className="text-amber-900"/>
+              Did caffeine affect your sleep?
+            </p>
             <div className="flex items-center gap-1">
               <input id="caffeineEffect" type="checkbox" className="w-5 h-5" />
               <label htmlFor="caffeineEffect">Yes</label>
