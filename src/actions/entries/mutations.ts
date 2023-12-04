@@ -6,10 +6,10 @@ import { revalidatePath } from "next/cache";
 
 type EntryFields = {
   sleepTime: Date;
-  wakeTime?: Date;
+  wakeTime?: Date | null;
   readMaterial: boolean;
-  reason?: string;
-  activity?: string;
+  reason?: string | null;
+  activity?: string | null;
   energyLevel?: number;
   caffeineEffect: boolean;
   remarks?: string;

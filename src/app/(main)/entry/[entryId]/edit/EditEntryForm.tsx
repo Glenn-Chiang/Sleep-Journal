@@ -79,10 +79,10 @@ export const EditEntryForm = ({ entry }: { entry: Entry }) => {
     try {
       await editEntry(entry.id, {
         sleepTime: new Date(sleepTime), // Date from input field is a string, so we convert it to an actual date
-        wakeTime: wakeTime ? new Date(wakeTime) : undefined,
+        wakeTime: wakeTime ? new Date(wakeTime) : null,
         readMaterial,
-        reason: readMaterial ? undefined : reasonForNotReading,
-        activity: readMaterial ? undefined : activity,
+        reason: readMaterial ? null : reasonForNotReading,
+        activity: readMaterial ? null : activity,
         energyLevel,
         caffeineEffect,
         remarks,
@@ -144,7 +144,7 @@ export const EditEntryForm = ({ entry }: { entry: Entry }) => {
               </div>
             </div>
 
-            {readMaterial || (
+            {!readMaterial && (
               <>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="reason">Why not?</label>
