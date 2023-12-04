@@ -26,3 +26,17 @@ export const useValidateWakeTime = (sleepTime: string) => {
     return true;
   };
 };
+
+export const useValidateReason = (readMaterial: boolean) => {
+  return (reason?: string) => {
+    if (!readMaterial && !reason) return "Please fill in this field";
+    return true;
+  };
+};
+
+export const useValidateActivity = (readMaterial: boolean) => {
+  return (activity?: string) => {
+    if (!readMaterial && !activity) return "Please fill in this field";
+    return true;
+  };
+}

@@ -6,8 +6,18 @@ import { ErrorMessage } from "@/components/ErrorMessage";
 import { CancelButton, SubmitButton } from "@/components/buttons";
 import { notify } from "@/lib/notifications";
 import { calculateDuration } from "@/lib/timeCalculations";
-import { useValidateSleepTime, useValidateWakeTime } from "@/lib/validations";
-import { faBattery, faBed, faSun } from "@fortawesome/free-solid-svg-icons";
+import {
+  useValidateActivity,
+  useValidateReason,
+  useValidateSleepTime,
+  useValidateWakeTime,
+} from "@/lib/validations";
+import {
+  faBattery,
+  faBed,
+  faBookOpen,
+  faSun,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -17,7 +27,7 @@ type EntryFormFields = {
   sleepTime: string;
   wakeTime?: string;
   readMaterial: boolean;
-  reasonForNotReading?: boolean;
+  reasonForNotReading?: string;
   activity?: string;
   remarks?: string;
 };
@@ -35,9 +45,12 @@ export default function AddEntryPage() {
 
   const sleepTime = watch("sleepTime");
   const wakeTime = watch("wakeTime");
-
   const validateSleepTime = useValidateSleepTime(wakeTime);
   const validateWakeTime = useValidateWakeTime(sleepTime);
+
+  const readMaterial = watch("readMaterial");
+  const validateReason = useValidateReason(readMaterial);
+  const validateActivity = useValidateActivity(readMaterial);
 
   // Energy scale is handled separately from other form fields
   const [energyLevel, setEnergyLevel] = useState<number | undefined>(undefined);
@@ -55,7 +68,14 @@ export default function AddEntryPage() {
   const onSubmit: SubmitHandler<EntryFormFields> = async (formFields) => {
     setIsPending(true);
 
-    const { sleepTime, wakeTime, remarks } = formFields;
+    const {
+      sleepTime,
+      wakeTime,
+      readMaterial,
+      reasonForNotReading,
+      activity,
+      remarks,
+    } = formFields;
 
     try {
       await createEntry({
@@ -76,11 +96,11 @@ export default function AddEntryPage() {
 
   return (
     <>
+      <h1 className="pt-4 text-center">Record your Sleep</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-8 sm:w-3/4 md:w-1/2"
+        className="flex flex-col gap-10 sm:w-3/4 md:w-1/2"
       >
-        <h1 className="pt-4 text-center">Record your Sleep</h1>
         <fieldset className="flex flex-col gap-4 ">
           <legend className="text-xl font-medium pb-4">Before bed</legend>
           <section className="flex flex-col gap-2">
@@ -102,25 +122,48 @@ export default function AddEntryPage() {
               disabled={isPending}
             />
           </section>
-          <section className="flex flex-col gap-4">
-            <label>
-              Did you read the material for at least 30min before sleeping?
-            </label>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="reason">Why not?</label>
-              <textarea id="reason" />
+
+          <section className="flex flex-col gap-4 ">
+            <p>
+              Did you read the material for at least 30min before sleeping?{" "}
+              <FontAwesomeIcon icon={faBookOpen} className="text-sky-500" />
+            </p>
+            <div className="flex items-center gap-1">
+              <input
+                type="checkbox"
+                {...register("readMaterial")}
+                className="w-5 h-5"
+              />
+              <label>Yes</label>
             </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="activity">What were you doing instead?</label>
-              <textarea id="activity" />
-            </div>
+
+            {readMaterial || (
+              <>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="reason">Why not?</label>
+                  <textarea
+                    id="reason"
+                    {...register("reasonForNotReading", {
+                      validate: validateReason,
+                    })}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="activity">What were you doing instead?</label>
+                  <textarea
+                    id="activity"
+                    {...register("activity", {
+                      validate: validateActivity,
+                    })}
+                  />
+                </div>
+              </>
+            )}
           </section>
         </fieldset>
 
         <fieldset className="flex flex-col gap-4">
-          <legend className="text-xl font-medium pb-4">
-            After waking up
-          </legend>
+          <legend className="text-xl font-medium pb-4">After waking up</legend>
           <p className="text-slate-500">
             If you&apos;re going to sleep now, you can fill in this section
             tomorrow
