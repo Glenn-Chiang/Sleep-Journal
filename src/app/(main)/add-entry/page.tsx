@@ -141,6 +141,11 @@ export default function AddEntryPage() {
               <>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="reason">Why not?</label>
+                  {errors.reasonForNotReading?.message && (
+                    <ErrorMessage
+                      message={errors.reasonForNotReading.message}
+                    />
+                  )}
                   <textarea
                     id="reason"
                     {...register("reasonForNotReading", {
@@ -150,6 +155,9 @@ export default function AddEntryPage() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="activity">What were you doing instead?</label>
+                  {errors.activity?.message && (
+                    <ErrorMessage message={errors.activity.message} />
+                  )}
                   <textarea
                     id="activity"
                     {...register("activity", {
