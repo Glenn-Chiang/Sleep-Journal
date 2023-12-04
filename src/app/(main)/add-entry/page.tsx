@@ -1,21 +1,23 @@
 "use client";
 
-import { CancelButton, SubmitButton } from "@/components/buttons";
-import { faBattery, faBed, faSun } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { EnergyScale } from "@/components/EnergyScale";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { ErrorMessage } from "@/components/ErrorMessage";
 import { createEntry } from "@/actions/entries/mutations";
-import { toast } from "react-toastify";
+import { EnergyScale } from "@/components/EnergyScale";
+import { ErrorMessage } from "@/components/ErrorMessage";
+import { CancelButton, SubmitButton } from "@/components/buttons";
 import { notify } from "@/lib/notifications";
 import { calculateDuration } from "@/lib/timeCalculations";
+import { useValidateSleepTime, useValidateWakeTime } from "@/lib/validations";
+import { faBattery, faBed, faSun } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type EntryFormFields = {
   sleepTime: string;
   wakeTime?: string;
+  readMaterial: boolean;
+  reasonForNotReading?: boolean;
   activity?: string;
   remarks?: string;
 };
@@ -34,28 +36,8 @@ export default function AddEntryPage() {
   const sleepTime = watch("sleepTime");
   const wakeTime = watch("wakeTime");
 
-  const validateSleepTime = (sleepTime: string) => {
-    if (
-      wakeTime &&
-      calculateDuration(new Date(sleepTime), new Date(wakeTime)) > 24
-    ) {
-      return "You likely didn't sleep for more than 24 hours. Perhaps you entered the wrong date?";
-    }
-    return true;
-  };
-
-  const validateWakeTime = (wakeTime: string | undefined) => {
-    if (wakeTime && new Date(wakeTime) < new Date(sleepTime)) {
-      return "You couldn't have woken up before sleeping";
-    }
-    if (
-      wakeTime &&
-      calculateDuration(new Date(sleepTime), new Date(wakeTime)) > 24
-    ) {
-      return "You likely didn't sleep for more than 24 hours. Perhaps you entered the wrong date?";
-    }
-    return true;
-  };
+  const validateSleepTime = useValidateSleepTime(wakeTime)
+  const validateWakeTime = useValidateWakeTime(sleepTime)
 
   // Energy scale is handled separately from other form fields
   const [energyLevel, setEnergyLevel] = useState<number | undefined>(undefined);
@@ -73,13 +55,12 @@ export default function AddEntryPage() {
   const onSubmit: SubmitHandler<EntryFormFields> = async (formFields) => {
     setIsPending(true);
 
-    const { sleepTime, wakeTime, activity, remarks } = formFields;
+    const { sleepTime, wakeTime, remarks } = formFields;
 
     try {
       await createEntry({
         sleepTime: new Date(sleepTime), // Date from input field is a string, so we convert it to an actual date
         wakeTime: wakeTime ? new Date(wakeTime) : undefined,
-        activity: activity || undefined,
         energyLevel,
         remarks,
       });
@@ -96,7 +77,7 @@ export default function AddEntryPage() {
   return (
     <>
       <h1 className="">Record your Sleep</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8 sm:w-1/2">
         <section className="flex flex-col gap-2">
           <label htmlFor="sleepTime" className="flex gap-2 items-center">
             <FontAwesomeIcon icon={faBed} className="text-sky-500" />
@@ -117,18 +98,8 @@ export default function AddEntryPage() {
           />
         </section>
 
-        <section className="flex flex-col gap-2">
-          <label htmlFor="activity" className="flex gap-2 items-center">
-            What were you doing before bed?
-          </label>
-          {errors.activity?.message && (
-            <ErrorMessage message={errors.activity.message} />
-          )}
-          <textarea
-            id="activity"
-            {...register("activity", { required: "Please fill in this field" })}
-            disabled={isPending}
-          />
+        <section>
+          <label>Did you read the material for at least 30min before sleeping?</label>
         </section>
 
         <section className="flex flex-col gap-2">
