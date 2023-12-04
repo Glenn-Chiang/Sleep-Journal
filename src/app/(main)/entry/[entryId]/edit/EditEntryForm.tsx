@@ -1,6 +1,7 @@
 "use client";
 
-import { createEntry } from "@/actions/entries/mutations";
+import { getEntry } from "@/actions/entries/fetches";
+import { createEntry, editEntry } from "@/actions/entries/mutations";
 import { EnergyScale } from "@/components/EnergyScale";
 import { ErrorMessage } from "@/components/ErrorMessage";
 import { CancelButton, SubmitButton } from "@/components/buttons";
@@ -24,8 +25,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { EntryFormFields } from "@/lib/types";
+import { Entry } from "@prisma/client";
+import { formatDatetime } from "../../../../../lib/timeCalculations";
 
-export default function AddEntryPage() {
+export const EditEntryForm = ({ entry }: { entry: Entry }) => {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,7 +49,9 @@ export default function AddEntryPage() {
   const validateActivity = useValidateActivity(readMaterial);
 
   // Energy scale is handled separately from other form fields
-  const [energyLevel, setEnergyLevel] = useState<number | undefined>(undefined);
+  const [energyLevel, setEnergyLevel] = useState<number | undefined>(
+    entry.energyLevel || undefined
+  );
   const handleEnergyClick = (clickedLevel: number) => {
     if (clickedLevel === energyLevel) {
       // Clicking a selected button will unselect it
@@ -72,7 +77,7 @@ export default function AddEntryPage() {
     } = formFields;
 
     try {
-      await createEntry({
+      await editEntry(entry.id, {
         sleepTime: new Date(sleepTime), // Date from input field is a string, so we convert it to an actual date
         wakeTime: wakeTime ? new Date(wakeTime) : undefined,
         readMaterial,
@@ -85,7 +90,7 @@ export default function AddEntryPage() {
 
       // Redirect to homepage on successful submission
       router.push("/");
-      notify("Entry added!");
+      notify("Entry updated!");
     } catch (error) {
       setError((error as Error).message);
       setIsPending(false);
@@ -94,7 +99,7 @@ export default function AddEntryPage() {
 
   return (
     <>
-      <h1 className="pt-4 text-center">Record your Sleep</h1>
+      <h1>Edit your entry</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-12 md:w-3/4 px-2"
@@ -110,6 +115,7 @@ export default function AddEntryPage() {
               <ErrorMessage message={errors.sleepTime.message} />
             )}
             <input
+              defaultValue={formatDatetime(entry.sleepTime)}
               id="sleepTime"
               type="datetime-local"
               {...register("sleepTime", {
@@ -130,6 +136,7 @@ export default function AddEntryPage() {
               <div className="flex items-center gap-1">
                 <input
                   type="checkbox"
+                  defaultChecked={entry.readMaterial || undefined}
                   {...register("readMaterial")}
                   className="w-5 h-5"
                 />
@@ -147,6 +154,7 @@ export default function AddEntryPage() {
                     />
                   )}
                   <textarea
+                    defaultValue={entry.reason || undefined}
                     id="reason"
                     {...register("reasonForNotReading", {
                       validate: validateReason,
@@ -159,6 +167,7 @@ export default function AddEntryPage() {
                     <ErrorMessage message={errors.activity.message} />
                   )}
                   <textarea
+                    defaultValue={entry.activity || undefined}
                     id="activity"
                     {...register("activity", {
                       validate: validateActivity,
@@ -187,6 +196,9 @@ export default function AddEntryPage() {
               <ErrorMessage message={errors.wakeTime.message} />
             )}
             <input
+              defaultValue={
+                entry.wakeTime ? formatDatetime(entry.wakeTime) : undefined
+              }
               id="wakeTime"
               {...register("wakeTime", { validate: validateWakeTime })}
               type="datetime-local"
@@ -213,11 +225,16 @@ export default function AddEntryPage() {
 
           <div className="flex flex-col gap-2">
             <p className="flex gap-2 items-center">
-              <FontAwesomeIcon icon={faCoffee} className="text-amber-900"/>
+              <FontAwesomeIcon icon={faCoffee} className="text-amber-900" />
               Did caffeine affect your sleep?
             </p>
             <div className="flex items-center gap-1">
-              <input id="caffeineEffect" type="checkbox" className="w-5 h-5" />
+              <input
+                id="caffeineEffect"
+                type="checkbox"
+                className="w-5 h-5"
+                defaultChecked={entry.caffeineEffect || undefined}
+              />
               <label htmlFor="caffeineEffect">Yes</label>
             </div>
           </div>
@@ -232,6 +249,7 @@ export default function AddEntryPage() {
             <ErrorMessage message={errors.remarks.message} />
           )}
           <textarea
+            defaultValue={entry.remarks || undefined}
             id="remarks"
             {...register("remarks")}
             disabled={isPending}
@@ -247,4 +265,4 @@ export default function AddEntryPage() {
       </form>
     </>
   );
-}
+};

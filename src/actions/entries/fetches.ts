@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/db";
 
 export const getUserEntries = async (userId: number) => {
@@ -13,7 +14,9 @@ export const getUserEntries = async (userId: number) => {
   return entries;
 };
 
-export const getEntry = async (userId: number, entryId: string) => {
+export const getEntry = async (entryId: string) => {
+  const userId = (await getCurrentUser())?.id
+
   const entry = await prisma.entry.findUnique({
     where: {
       id: entryId

@@ -25,7 +25,7 @@ export default function RootLayout({
         <body className={font.className}>
           <ToastProvider />
           <Navbar />
-          <main className="flex min-h-screen flex-col items-center pt-20 p-2 sm:p-4 gap-8 sm:gap-10">
+          <main className="flex min-h-screen flex-col items-center pt-20 p-2 sm:p-4 sm:pt-20 gap-8">
             {children}
           </main>
         </body>

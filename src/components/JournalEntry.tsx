@@ -21,6 +21,7 @@ import { Entry } from "@prisma/client";
 import { useState } from "react";
 import { DeleteEntryModal } from "./DeleteEntryModal";
 import { EnergyButton, energyOptions } from "./EnergyScale";
+import Link from "next/link";
 
 type JournalEntryProps = {
   entry: Entry;
@@ -168,14 +169,19 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
           )}
           {previewMode ? "Show more" : "Show less"}
         </button>
-
         {authorized && (
-          <button
-            onClick={() => setDeleteModalIsOpen(true)}
-            className="bg-slate-100 text-red-500 hover:bg-red-100"
-          >
-            Delete
-          </button>
+          <div className="flex gap-2">
+            <Link href={`/entry/${entry.id}/edit`} className="bg-slate-100 p-2 rounded-md w-16 text-center hover:bg-slate-200">
+              Edit
+            </Link>
+            <button
+              onClick={() => setDeleteModalIsOpen(true)}
+              className="bg-slate-100 text-red-500 hover:bg-red-100 w-16"
+            >
+              Delete
+            </button>
+            
+          </div>
         )}
       </div>
       {deleteModalIsOpen && (

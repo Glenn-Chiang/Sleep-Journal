@@ -18,7 +18,7 @@ type EntryFields = {
 export const createEntry = async (entryFields: EntryFields) => {
   const currentUser = await getCurrentUser();
   if (!currentUser) {
-    throw new Error('Unauthenticated')
+    throw new Error("Unauthenticated");
   }
 
   const entry = await prisma.entry.create({
@@ -27,6 +27,31 @@ export const createEntry = async (entryFields: EntryFields) => {
 
   revalidatePath("/");
   return entry;
+};
+
+export const editEntry = async (entryId: string, entryFields: EntryFields) => {
+  const currentUser = await getCurrentUser();
+
+  const entry = await prisma.entry.findUnique({
+    where: {
+      id: entryId,
+    },
+  });
+
+  // Only author of entry is authorized to edit it
+  if (entry?.userId !== currentUser?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  const updatedEntry = await prisma.entry.update({
+    where: {
+      id: entryId,
+    },
+    data: entryFields,
+  });
+
+  revalidatePath("/")
+  return updatedEntry;
 };
 
 export const deleteEntry = async (entryId: string) => {
@@ -126,8 +151,6 @@ export const updateRemarks = async (
   revalidatePath("/");
   return entry;
 };
-
-
 
 export const updateEnergyLevel = async (
   entryId: string,
