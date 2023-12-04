@@ -36,8 +36,8 @@ export default function AddEntryPage() {
   const sleepTime = watch("sleepTime");
   const wakeTime = watch("wakeTime");
 
-  const validateSleepTime = useValidateSleepTime(wakeTime)
-  const validateWakeTime = useValidateWakeTime(sleepTime)
+  const validateSleepTime = useValidateSleepTime(wakeTime);
+  const validateWakeTime = useValidateWakeTime(sleepTime);
 
   // Energy scale is handled separately from other form fields
   const [energyLevel, setEnergyLevel] = useState<number | undefined>(undefined);
@@ -76,72 +76,90 @@ export default function AddEntryPage() {
 
   return (
     <>
-      <h1 className="">Record your Sleep</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8 sm:w-1/2">
-        <section className="flex flex-col gap-2">
-          <label htmlFor="sleepTime" className="flex gap-2 items-center">
-            <FontAwesomeIcon icon={faBed} className="text-sky-500" />
-            When did you go to bed?
-          </label>
-          {errors.sleepTime?.message && (
-            <ErrorMessage message={errors.sleepTime.message} />
-          )}
-          <input
-            id="sleepTime"
-            type="datetime-local"
-            {...register("sleepTime", {
-              required: "Please fill in this field",
-              validate: validateSleepTime,
-            })}
-            className="w-min"
-            disabled={isPending}
-          />
-        </section>
-
-        <section>
-          <label>Did you read the material for at least 30min before sleeping?</label>
-        </section>
-
-        <section className="flex flex-col gap-2">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="wakeTime" className="flex gap-2 items-center">
-              <FontAwesomeIcon icon={faSun} className="text-yellow-500" />
-              When did you wake up?
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-8 sm:w-3/4 md:w-1/2"
+      >
+        <h1 className="pt-4 text-center">Record your Sleep</h1>
+        <fieldset className="flex flex-col gap-4 ">
+          <legend className="text-xl font-medium pb-4">Before bed</legend>
+          <section className="flex flex-col gap-2">
+            <label htmlFor="sleepTime" className="flex gap-2 items-center">
+              <FontAwesomeIcon icon={faBed} className="text-sky-500" />
+              When did you go to bed?
             </label>
-            <small className="text-slate-500">
-              If you&apos;re going to sleep now, you can fill this in later
-            </small>
-          </div>
-          {errors.wakeTime?.message && (
-            <ErrorMessage message={errors.wakeTime.message} />
-          )}
-          <input
-            id="wakeTime"
-            {...register("wakeTime", { validate: validateWakeTime })}
-            type="datetime-local"
-            className="w-min"
-            disabled={isPending}
-          />
-        </section>
+            {errors.sleepTime?.message && (
+              <ErrorMessage message={errors.sleepTime.message} />
+            )}
+            <input
+              id="sleepTime"
+              type="datetime-local"
+              {...register("sleepTime", {
+                required: "Please fill in this field",
+                validate: validateSleepTime,
+              })}
+              className="w-min"
+              disabled={isPending}
+            />
+          </section>
+          <section className="flex flex-col gap-4">
+            <label>
+              Did you read the material for at least 30min before sleeping?
+            </label>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="reason">Why not?</label>
+              <textarea id="reason" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="activity">What were you doing instead?</label>
+              <textarea id="activity" />
+            </div>
+          </section>
+        </fieldset>
 
-        <section className="flex flex-col gap-2">
-          <div className="flex gap-2 items-center">
-            <p className="flex flex-col gap-1">
-              <span>
-                How would you rate your energy level throughout the day?{" "}
-                <FontAwesomeIcon icon={faBattery} className="text-teal-500" />
-              </span>
-              <small className="text-slate-500">
-                If you&apos;re going to sleep now, you can fill this in later
-              </small>
-            </p>
-          </div>
-          <EnergyScale
-            disabled={false}
-            handleClick={handleEnergyClick}
-            selectedValue={energyLevel}
-          />
-        </section>
+        <fieldset className="flex flex-col gap-4">
+          <legend className="text-xl font-medium pb-4">
+            After waking up
+          </legend>
+          <p className="text-slate-500">
+            If you&apos;re going to sleep now, you can fill in this section
+            tomorrow
+          </p>
+          <section className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
+              <label htmlFor="wakeTime" className="flex gap-2 items-center">
+                <FontAwesomeIcon icon={faSun} className="text-yellow-500" />
+                When did you wake up?
+              </label>
+            </div>
+            {errors.wakeTime?.message && (
+              <ErrorMessage message={errors.wakeTime.message} />
+            )}
+            <input
+              id="wakeTime"
+              {...register("wakeTime", { validate: validateWakeTime })}
+              type="datetime-local"
+              className="w-min"
+              disabled={isPending}
+            />
+          </section>
+
+          <section className="flex flex-col gap-2">
+            <div className="flex gap-2 items-center">
+              <p className="flex flex-col gap-1">
+                <span>
+                  How would you rate your energy level throughout the day?{" "}
+                  <FontAwesomeIcon icon={faBattery} className="text-teal-500" />
+                </span>
+              </p>
+            </div>
+            <EnergyScale
+              disabled={false}
+              handleClick={handleEnergyClick}
+              selectedValue={energyLevel}
+            />
+          </section>
+        </fieldset>
 
         <section className="flex flex-col gap-2">
           <label htmlFor="remarks" className="flex gap-2 flex-col sm:flex-row">
