@@ -39,14 +39,18 @@ export const EditEntryForm = ({ entry }: { entry: Entry }) => {
     watch,
   } = useForm<EntryFormFields>();
 
-  const sleepTime = watch("sleepTime");
-  const wakeTime = watch("wakeTime");
+  const sleepTime = watch("sleepTime", formatDatetime(entry.sleepTime));
+  const wakeTime = watch("wakeTime", entry.wakeTime ? formatDatetime(entry.wakeTime) : undefined);
   const validateSleepTime = useValidateSleepTime(wakeTime);
   const validateWakeTime = useValidateWakeTime(sleepTime);
-
-  const readMaterial = watch("readMaterial");
+  
+  const readMaterial = watch("readMaterial", entry.readMaterial || undefined);
   const validateReason = useValidateReason(readMaterial);
   const validateActivity = useValidateActivity(readMaterial);
+  
+  console.log(sleepTime)
+  console.log(wakeTime)
+  console.log(readMaterial)
 
   // Energy scale is handled separately from other form fields
   const [energyLevel, setEnergyLevel] = useState<number | undefined>(
@@ -136,7 +140,9 @@ export const EditEntryForm = ({ entry }: { entry: Entry }) => {
               <div className="flex items-center gap-1">
                 <input
                   type="checkbox"
-                  defaultChecked={entry.readMaterial === null ? false : entry.readMaterial}
+                  defaultChecked={
+                    entry.readMaterial === null ? false : entry.readMaterial
+                  }    
                   {...register("readMaterial")}
                   className="w-5 h-5"
                 />
@@ -234,7 +240,9 @@ export const EditEntryForm = ({ entry }: { entry: Entry }) => {
                 {...register("caffeineEffect")}
                 type="checkbox"
                 className="w-5 h-5"
-                defaultChecked={entry.caffeineEffect === null ? false : entry.caffeineEffect}
+                defaultChecked={
+                  entry.caffeineEffect === null ? false : entry.caffeineEffect
+                }
               />
               <label htmlFor="caffeineEffect">Yes</label>
             </div>
