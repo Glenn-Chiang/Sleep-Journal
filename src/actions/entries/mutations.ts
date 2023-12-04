@@ -11,6 +11,7 @@ type EntryFields = {
   reason?: string;
   activity?: string;
   energyLevel?: number;
+  caffeineEffect: boolean;
   remarks?: string;
 };
 

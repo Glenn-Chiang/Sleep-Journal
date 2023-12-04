@@ -31,6 +31,7 @@ model Entry {
   reason String? // Required if readMaterial is false
   activity String? // Required if readMaterial is false
   energyLevel Int?
+  caffeineEffect Boolean?
   remarks String?
 }
 

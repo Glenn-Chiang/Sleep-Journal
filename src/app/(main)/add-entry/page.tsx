@@ -29,6 +29,7 @@ type EntryFormFields = {
   readMaterial: boolean;
   reasonForNotReading?: string;
   activity?: string;
+  caffeineEffect: boolean;
   remarks?: string;
 };
 
@@ -74,6 +75,7 @@ export default function AddEntryPage() {
       readMaterial,
       reasonForNotReading,
       activity,
+      caffeineEffect,
       remarks,
     } = formFields;
 
@@ -85,6 +87,7 @@ export default function AddEntryPage() {
         reason: readMaterial ? undefined : reasonForNotReading,
         activity: readMaterial ? undefined : activity,
         energyLevel,
+        caffeineEffect,
         remarks,
       });
 
@@ -126,18 +129,20 @@ export default function AddEntryPage() {
             />
           </section>
 
-          <section className="flex flex-col gap-4 ">
-            <p>
-              Did you read the material for at least 30min before sleeping?{" "}
-              <FontAwesomeIcon icon={faBookOpen} className="text-sky-500" />
-            </p>
-            <div className="flex items-center gap-1">
-              <input
-                type="checkbox"
-                {...register("readMaterial")}
-                className="w-5 h-5"
-              />
-              <label>Yes</label>
+          <section className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <p>
+                Did you read the material for at least 30min before sleeping?{" "}
+                <FontAwesomeIcon icon={faBookOpen} className="text-sky-500" />
+              </p>
+              <div className="flex items-center gap-1">
+                <input
+                  type="checkbox"
+                  {...register("readMaterial")}
+                  className="w-5 h-5"
+                />
+                <label>Yes</label>
+              </div>
             </div>
 
             {readMaterial || (
@@ -213,6 +218,14 @@ export default function AddEntryPage() {
               selectedValue={energyLevel}
             />
           </section>
+
+          <div className="flex flex-col gap-2">
+            <p>Did caffeine affect your sleep?</p>
+            <div className="flex items-center gap-1">
+              <input id="caffeineEffect" type="checkbox" className="w-5 h-5" />
+              <label htmlFor="caffeineEffect">Yes</label>
+            </div>
+          </div>
         </fieldset>
 
         <section className="flex flex-col gap-2">
