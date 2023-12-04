@@ -99,7 +99,7 @@ export const EditEntryForm = ({ entry }: { entry: Entry }) => {
 
   return (
     <>
-      <h1>Edit your entry</h1>
+      <h1 className="pt-4">Edit your entry</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-12 md:w-3/4 px-2"
@@ -136,7 +136,7 @@ export const EditEntryForm = ({ entry }: { entry: Entry }) => {
               <div className="flex items-center gap-1">
                 <input
                   type="checkbox"
-                  defaultChecked={entry.readMaterial || undefined}
+                  defaultChecked={entry.readMaterial === null ? false : entry.readMaterial}
                   {...register("readMaterial")}
                   className="w-5 h-5"
                 />
@@ -231,9 +231,10 @@ export const EditEntryForm = ({ entry }: { entry: Entry }) => {
             <div className="flex items-center gap-1">
               <input
                 id="caffeineEffect"
+                {...register("caffeineEffect")}
                 type="checkbox"
                 className="w-5 h-5"
-                defaultChecked={entry.caffeineEffect || undefined}
+                defaultChecked={entry.caffeineEffect === null ? false : entry.caffeineEffect}
               />
               <label htmlFor="caffeineEffect">Yes</label>
             </div>

@@ -112,7 +112,7 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
               </p>
               <div className="flex flex-col gap-2">
                 <p className="text-slate-500">
-                  Why didn&apos;t I read the material?
+                  Why I didn&apos;t read the material
                 </p>
                 <p className="bg-slate-100 p-2 rounded">{reason}</p>
               </div>
