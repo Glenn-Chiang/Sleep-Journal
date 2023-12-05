@@ -5,6 +5,7 @@ import {
   calculateDuration,
   convertDurationToHoursAndMinutes,
   formatDate,
+  formatTime,
 } from "@/lib/timeCalculations";
 import {
   faBattery,
@@ -87,14 +88,14 @@ export const JournalEntry = ({ entry }: JournalEntryProps) => {
             <FontAwesomeIcon icon={faMoon} className="text-sky-500" />
             <span className="text-slate-500">Slept at</span>
           </span>
-          <span>{sleepDate}</span>
+          <span>{formatTime(sleepTime)}</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="flex gap-1 items-center">
             <FontAwesomeIcon icon={faSun} className="text-yellow-500" />
             <span className="text-slate-500">Woke at</span>
           </span>
-          <span>{wakeDate || "-"}</span>
+          <span>{wakeTime ? formatTime(wakeTime) : "-"}</span>
         </div>
       </div>
 

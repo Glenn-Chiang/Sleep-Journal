@@ -47,10 +47,6 @@ export const EditEntryForm = ({ entry }: { entry: Entry }) => {
   const readMaterial = watch("readMaterial", entry.readMaterial || undefined);
   const validateReason = useValidateReason(readMaterial);
   const validateActivity = useValidateActivity(readMaterial);
-  
-  console.log(sleepTime)
-  console.log(wakeTime)
-  console.log(readMaterial)
 
   // Energy scale is handled separately from other form fields
   const [energyLevel, setEnergyLevel] = useState<number | undefined>(
